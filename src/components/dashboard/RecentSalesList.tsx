@@ -48,7 +48,7 @@ const RecentSalesList = () => {
                 <TableCell className="font-medium">{sale.id}</TableCell>
                 <TableCell>{sale.customer}</TableCell>
                 <TableCell className="text-right">{sale.items}</TableCell>
-                <TableCell className="text-right">${sale.total.toFixed(2)}</TableCell>
+                <TableCell className="text-right">&#8377;{sale.total.toFixed(2)}</TableCell>
                 <TableCell className="text-right">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                     sale.status === 'completed' 
