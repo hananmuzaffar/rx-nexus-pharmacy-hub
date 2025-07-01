@@ -15,11 +15,11 @@ interface Sale {
 }
 
 const recentSales: Sale[] = [
-  { id: 'INV-001', customer: 'Sarah Johnson', items: 3, total: 89.97, date: '2025-04-06', status: 'completed' },
-  { id: 'INV-002', customer: 'Michael Smith', items: 2, total: 124.50, date: '2025-04-06', status: 'completed' },
-  { id: 'INV-003', customer: 'David Williams', items: 5, total: 215.75, date: '2025-04-05', status: 'completed' },
-  { id: 'INV-004', customer: 'Emily Brown', items: 1, total: 45.99, date: '2025-04-05', status: 'pending' },
-  { id: 'INV-005', customer: 'James Davis', items: 4, total: 156.80, date: '2025-04-04', status: 'completed' },
+  { id: 'INV-001', customer: 'Mohammd Hanan', items: 3, total: 89.97, date: '2025-04-06', status: 'completed' },
+  { id: 'INV-002', customer: 'Uzaid Showkat', items: 2, total: 124.50, date: '2025-04-06', status: 'completed' },
+  { id: 'INV-003', customer: 'Tahoora Tanveer', items: 5, total: 215.75, date: '2025-04-05', status: 'completed' },
+  { id: 'INV-004', customer: 'Najma Naseer', items: 1, total: 45.99, date: '2025-04-05', status: 'pending' },
+  { id: 'INV-005', customer: 'Test User', items: 4, total: 156.80, date: '2025-04-04', status: 'completed' },
 ];
 
 const RecentSalesList = () => {
@@ -48,7 +48,7 @@ const RecentSalesList = () => {
                 <TableCell className="font-medium">{sale.id}</TableCell>
                 <TableCell>{sale.customer}</TableCell>
                 <TableCell className="text-right">{sale.items}</TableCell>
-                <TableCell className="text-right">&#8377;{sale.total.toFixed(2)}</TableCell>
+                <TableCell className="text-right">₹{sale.total.toFixed(2)}</TableCell>
                 <TableCell className="text-right">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                     sale.status === 'completed' 

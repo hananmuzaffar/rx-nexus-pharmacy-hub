@@ -33,7 +33,7 @@ const PurchaseStatCards: React.FC<PurchaseStatsProps> = ({
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            ${totalPurchases.toFixed(2)}
+            ₹{totalPurchases.toFixed(2)}
           </div>
           <p className="text-xs text-muted-foreground">+5% from last month</p>
         </CardContent>

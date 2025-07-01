@@ -130,7 +130,7 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
                       </span>
                     </td>
                     <td className="p-2 align-middle">{item.reorderLevel}</td>
-                    <td className="p-2 align-middle">${item.unitPrice.toFixed(2)}</td>
+                    <td className="p-2 align-middle">₹{item.unitPrice.toFixed(2)}</td>
                     <td className="p-2 align-middle">
                       <span className={`${isExpiringSoon ? 'text-amber-500 font-medium' : ''}`}>
                         {new Date(item.expiryDate).toLocaleDateString()}

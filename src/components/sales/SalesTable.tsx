@@ -92,7 +92,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales, onView }) => {
       date: new Date(sale.date).toLocaleDateString(),
       customer: sale.customer,
       items: sale.items.length,
-      totalAmount: `$${sale.totalAmount.toFixed(2)}`,
+      totalAmount: `₹${sale.totalAmount.toFixed(2)}`,
       paymentMethod: sale.paymentMethod
     }));
     
@@ -202,7 +202,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales, onView }) => {
                   <td className="p-2 align-middle">{new Date(sale.date).toLocaleDateString()}</td>
                   <td className="p-2 align-middle">{sale.customer}</td>
                   <td className="p-2 align-middle">{sale.items.length} items</td>
-                  <td className="p-2 align-middle">${sale.totalAmount.toFixed(2)}</td>
+                  <td className="p-2 align-middle">₹{sale.totalAmount.toFixed(2)}</td>
                   <td className="p-2 align-middle">{sale.paymentMethod}</td>
                   <td className="p-2 align-middle">
                     <Button variant="ghost" size="sm" onClick={() => onView(sale)}>
@@ -305,7 +305,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales, onView }) => {
               <Label>Amount Range</Label>
               <div className="flex items-center space-x-2">
                 <div>
-                  <Label htmlFor="min-amount" className="text-xs">Min ($)</Label>
+                  <Label htmlFor="min-amount" className="text-xs">Min (₹)</Label>
                   <Input
                     id="min-amount"
                     type="number"
@@ -316,7 +316,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ sales, onView }) => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="max-amount" className="text-xs">Max ($)</Label>
+                  <Label htmlFor="max-amount" className="text-xs">Max (₹)</Label>
                   <Input
                     id="max-amount"
                     type="number"

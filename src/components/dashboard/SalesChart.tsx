@@ -51,7 +51,7 @@ const SalesChart = () => {
                   <YAxis 
                     axisLine={false} 
                     tickLine={false} 
-                    tickFormatter={(value) => `&#8377;${value}`}
+                    tickFormatter={(value) => `₹${value}`}
                   />
                   <Tooltip 
                     formatter={(value) => [`&#8377${value}`, 'Sales']}
@@ -72,10 +72,10 @@ const SalesChart = () => {
                   <YAxis 
                     axisLine={false} 
                     tickLine={false} 
-                    tickFormatter={(value) => `&#8377;${value}`}
+                    tickFormatter={(value) => `₹${value}`}
                   />
                   <Tooltip 
-                    formatter={(value) => [`&#8377;${value}`, 'Sales']}
+                    formatter={(value) => [`₹${value}`, 'Sales']}
                     contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
                   />
                   <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />
@@ -93,10 +93,10 @@ const SalesChart = () => {
                   <YAxis 
                     axisLine={false} 
                     tickLine={false} 
-                    tickFormatter={(value) => `&#8377;${value}`}
+                    tickFormatter={(value) => `₹${value}`}
                   />
                   <Tooltip 
-                    formatter={(value) => [`&#8377;${value}`, 'Sales']}
+                    formatter={(value) => [`₹${value}`, 'Sales']}
                     contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
                   />
                   <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />

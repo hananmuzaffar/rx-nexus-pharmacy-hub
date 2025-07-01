@@ -194,7 +194,7 @@ const InventoryFormDialog: React.FC<InventoryFormDialogProps> = ({
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="unitPrice">Unit Price ($)</Label>
+                <Label htmlFor="unitPrice">Unit Price (₹)</Label>
                 <Input 
                   id="unitPrice"
                   name="unitPrice"

@@ -61,8 +61,8 @@ const OrderSummary = ({
                     </Button>
                   </div>
                 </td>
-                <td className="p-2 text-right">${item.unitCost.toFixed(2)}</td>
-                <td className="p-2 text-right">${item.total.toFixed(2)}</td>
+                <td className="p-2 text-right">₹{item.unitCost.toFixed(2)}</td>
+                <td className="p-2 text-right">₹{item.total.toFixed(2)}</td>
                 <td className="p-2 text-center">
                   <Button 
                     variant="ghost" 
@@ -82,7 +82,7 @@ const OrderSummary = ({
                 Total Cost:
               </td>
               <td className="p-2 text-right font-bold">
-                ${orderTotal.toFixed(2)}
+                ₹{orderTotal.toFixed(2)}
               </td>
               <td></td>
             </tr>

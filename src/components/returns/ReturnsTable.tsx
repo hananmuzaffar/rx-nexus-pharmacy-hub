@@ -128,7 +128,7 @@ const ReturnsTable: React.FC<ReturnsTableProps> = ({
                   <td className="p-2 align-middle">{item.quantity}</td>
                   <td className="p-2 align-middle">{new Date(item.date).toLocaleDateString()}</td>
                   <td className="p-2 align-middle">{item.reason}</td>
-                  <td className="p-2 align-middle">${item.refundAmount.toFixed(2)}</td>
+                  <td className="p-2 align-middle">₹{item.refundAmount.toFixed(2)}</td>
                   <td className="p-2 align-middle">
                     <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent ${
                       item.status === "processed"

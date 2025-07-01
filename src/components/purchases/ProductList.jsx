@@ -42,7 +42,7 @@ const ProductList = ({
                   <td className="p-2">{product.name}</td>
                   <td className="p-2">{product.sku}</td>
                   <td className="p-2">{product.category}</td>
-                  <td className="p-2 text-right">${product.unitCost.toFixed(2)}</td>
+                  <td className="p-2 text-right">₹{product.unitCost.toFixed(2)}</td>
                   <td className="p-2 text-center">
                     <Button 
                       variant="outline" 

@@ -25,13 +25,13 @@ const PurchaseStats = ({ orders }) => {
     },
     {
       title: 'Total Spent',
-      value: `$${totalSpent.toFixed(2)}`,
+      value: `₹${totalSpent.toFixed(2)}`,
       icon: <CreditCard className="h-5 w-5 text-green-500" />,
       description: 'For all orders'
     },
     {
       title: 'Average Order',
-      value: `$${averageOrderValue.toFixed(2)}`,
+      value: `₹${averageOrderValue.toFixed(2)}`,
       icon: <Truck className="h-5 w-5 text-purple-500" />,
       description: 'Per order value'
     }
