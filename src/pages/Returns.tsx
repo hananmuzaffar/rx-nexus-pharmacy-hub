@@ -203,7 +203,7 @@ const Returns = () => {
             <CardTitle className="text-sm font-medium">Total Refunded</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalRefundAmount.toFixed(2)}</div>
+            <div className="text-2xl font-bold">₹{totalRefundAmount.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
@@ -263,7 +263,7 @@ const Returns = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="refund-amount">Refund Amount ($)</Label>
+                <Label htmlFor="refund-amount">Refund Amount (₹)</Label>
                 <Input
                   id="refund-amount"
                   type="number"
@@ -353,7 +353,7 @@ const Returns = () => {
               </div>
               <div className="grid grid-cols-3 gap-1">
                 <div className="font-medium">Refund Amount:</div>
-                <div className="col-span-2">${selectedReturn.refundAmount.toFixed(2)}</div>
+                <div className="col-span-2">₹{selectedReturn.refundAmount.toFixed(2)}</div>
               </div>
               
               {selectedReturn.status === "pending" && (
