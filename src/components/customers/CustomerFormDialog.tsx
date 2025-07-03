@@ -96,7 +96,7 @@ const CustomerFormDialog: React.FC<CustomerFormDialogProps> = ({
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input placeholder="ABC" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,7 +110,7 @@ const CustomerFormDialog: React.FC<CustomerFormDialogProps> = ({
                 <FormItem>
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="john@example.com" type="email" {...field} />
+                    <Input placeholder="abc@example.com" type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -124,7 +124,7 @@ const CustomerFormDialog: React.FC<CustomerFormDialogProps> = ({
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="(555) 123-4567" {...field} />
+                    <Input placeholder="1234567890" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,7 +138,7 @@ const CustomerFormDialog: React.FC<CustomerFormDialogProps> = ({
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="123 Main St, City, State, 12345" {...field} />
+                    <Input placeholder="Srinagar, J&K" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
