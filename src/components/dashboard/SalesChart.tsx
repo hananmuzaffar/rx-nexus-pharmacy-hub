@@ -7,32 +7,34 @@ interface SalesChartProps {
   data?: any[];
 }
 
-const dailyData = [
-  { name: 'Mon', sales: 4000 },
-  { name: 'Tue', sales: 3000 },
-  { name: 'Wed', sales: 5000 },
-  { name: 'Thu', sales: 4500 },
-  { name: 'Fri', sales: 6000 },
-  { name: 'Sat', sales: 7200 },
-  { name: 'Sun', sales: 3800 },
-];
-
-const weeklyData = [
-  { name: 'Week 1', sales: 28000 },
-  { name: 'Week 2', sales: 32000 },
-  { name: 'Week 3', sales: 26000 },
-  { name: 'Week 4', sales: 35000 },
-];
-
-const monthlyData = [
-  { name: 'Jan', sales: 120000 },
-  { name: 'Feb', sales: 95000 },
-  { name: 'Mar', sales: 110000 },
-  { name: 'Apr', sales: 135000 },
-];
-
 const SalesChart = ({ data }: SalesChartProps) => {
-  const chartData = data || dailyData;
+  // Default fallback data if no data is provided
+  const defaultDailyData = [
+    { name: 'Mon', sales: 4000 },
+    { name: 'Tue', sales: 3000 },
+    { name: 'Wed', sales: 5000 },
+    { name: 'Thu', sales: 4500 },
+    { name: 'Fri', sales: 6000 },
+    { name: 'Sat', sales: 7200 },
+    { name: 'Sun', sales: 3800 },
+  ];
+
+  const weeklyData = [
+    { name: 'Week 1', sales: 28000 },
+    { name: 'Week 2', sales: 32000 },
+    { name: 'Week 3', sales: 26000 },
+    { name: 'Week 4', sales: 35000 },
+  ];
+
+  const monthlyData = [
+    { name: 'Jan', sales: 120000 },
+    { name: 'Feb', sales: 95000 },
+    { name: 'Mar', sales: 110000 },
+    { name: 'Apr', sales: 135000 },
+  ];
+
+  // Use provided data or fallback to default
+  const chartData = data && data.length > 0 ? data : defaultDailyData;
 
   return (
     <Tabs defaultValue="daily">

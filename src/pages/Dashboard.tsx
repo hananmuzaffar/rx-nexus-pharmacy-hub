@@ -68,7 +68,7 @@ const Dashboard = () => {
             <CardDescription>Last 7 days sales performance</CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
-            <SalesChart />
+            <SalesChart data={salesData} />
           </CardContent>
         </Card>
         

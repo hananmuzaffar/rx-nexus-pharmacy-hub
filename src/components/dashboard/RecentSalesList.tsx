@@ -3,6 +3,7 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Sale {
   id: string;
@@ -26,12 +27,17 @@ const defaultSales: Sale[] = [
 ];
 
 const RecentSalesList = ({ sales }: RecentSalesListProps) => {
+  const navigate = useNavigate();
   const recentSales = sales || defaultSales;
+
+  const handleViewAll = () => {
+    navigate('/sales');
+  };
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <Button variant="ghost" size="sm" className="text-xs gap-1">
+        <Button variant="ghost" size="sm" className="text-xs gap-1" onClick={handleViewAll}>
           View All <ArrowRight size={14} />
         </Button>
       </div>

@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Edit, Trash, Search, Filter } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type InventoryItem = {
   id: number;
@@ -11,9 +17,9 @@ type InventoryItem = {
   sku: string;
   category: string;
   stock: number;
-  reorderLevel: number;
-  unitPrice: number;
-  expiryDate: string;
+  reorder_level: number;
+  unit_price: number;
+  expiry_date: string;
 }
 
 interface InventoryTableProps {
@@ -28,25 +34,11 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
   onDelete
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredItems, setFilteredItems] = useState<InventoryItem[]>(items);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [stockFilter, setStockFilter] = useState('');
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    
-    if (!term) {
-      setFilteredItems(items);
-      return;
-    }
-    
-    const filtered = items.filter(
-      item => 
-        item.name.toLowerCase().includes(term) || 
-        item.sku.toLowerCase().includes(term) ||
-        item.category.toLowerCase().includes(term)
-    );
-    
-    setFilteredItems(filtered);
+    setSearchTerm(e.target.value);
   };
 
   const handleDelete = (id: number) => {
@@ -59,21 +51,30 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
     }
   };
 
-  // Recalculate filtered items when original items change
-  React.useEffect(() => {
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      const filtered = items.filter(
-        item => 
-          item.name.toLowerCase().includes(term) || 
-          item.sku.toLowerCase().includes(term) ||
-          item.category.toLowerCase().includes(term)
-      );
-      setFilteredItems(filtered);
-    } else {
-      setFilteredItems(items);
-    }
-  }, [items, searchTerm]);
+  // Get unique categories for filter
+  const categories = Array.from(new Set(items.map(item => item.category)));
+
+  // Apply filters
+  const filteredItems = items.filter(item => {
+    const matchesSearch = !searchTerm || 
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      item.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesCategory = !categoryFilter || item.category === categoryFilter;
+    
+    const matchesStock = !stockFilter || 
+      (stockFilter === 'low' && item.stock <= item.reorder_level) ||
+      (stockFilter === 'normal' && item.stock > item.reorder_level);
+
+    return matchesSearch && matchesCategory && matchesStock;
+  });
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setCategoryFilter('');
+    setStockFilter('');
+  };
 
   return (
     <div className="space-y-4">
@@ -87,10 +88,33 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
             onChange={handleSearch}
           />
         </div>
-        <Button variant="outline" className="w-full sm:w-auto">
-          <Filter className="h-4 w-4 mr-2" />
-          Filter
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="w-full sm:w-auto">
+              <Filter className="h-4 w-4 mr-2" />
+              Filter
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            <DropdownMenuItem onClick={() => setCategoryFilter('')}>
+              All Categories
+            </DropdownMenuItem>
+            {categories.map(category => (
+              <DropdownMenuItem key={category} onClick={() => setCategoryFilter(category)}>
+                {category}
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuItem onClick={() => setStockFilter('low')}>
+              Low Stock Only
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setStockFilter('normal')}>
+              Normal Stock Only
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={clearFilters}>
+              Clear Filters
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       
       <div className="relative w-full overflow-auto rounded-md border">
@@ -111,11 +135,11 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
             {filteredItems.length > 0 ? (
               filteredItems.map((item) => {
                 // Calculate if stock is low
-                const isLowStock = item.stock <= item.reorderLevel;
+                const isLowStock = item.stock <= item.reorder_level;
                 
                 // Calculate if expiry date is approaching (within 90 days)
                 const today = new Date();
-                const expiryDate = new Date(item.expiryDate);
+                const expiryDate = new Date(item.expiry_date);
                 const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
                 const isExpiringSoon = daysUntilExpiry <= 90;
                 
@@ -129,11 +153,11 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
                         {item.stock}
                       </span>
                     </td>
-                    <td className="p-2 align-middle">{item.reorderLevel}</td>
-                    <td className="p-2 align-middle">₹{item.unitPrice.toFixed(2)}</td>
+                    <td className="p-2 align-middle">{item.reorder_level}</td>
+                    <td className="p-2 align-middle">₹{(item.unit_price || 0).toFixed(2)}</td>
                     <td className="p-2 align-middle">
                       <span className={`${isExpiringSoon ? 'text-amber-500 font-medium' : ''}`}>
-                        {new Date(item.expiryDate).toLocaleDateString()}
+                        {new Date(item.expiry_date).toLocaleDateString()}
                       </span>
                     </td>
                     <td className="p-2 align-middle">

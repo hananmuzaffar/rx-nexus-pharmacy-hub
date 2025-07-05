@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Users, UserCheck, Clock } from "lucide-react";
-import CustomerTable from '@/components/customers/CustomerTable';
+import CustomerTableWithFilter from '@/components/customers/CustomerTableWithFilter';
 import CustomerFormDialog from '@/components/customers/CustomerFormDialog';
 import CustomerViewDialog from '@/components/customers/CustomerViewDialog';
 import { useCustomers } from '@/hooks/useCustomers';
@@ -131,7 +131,7 @@ const Customers = () => {
           <CardDescription>Manage your pharmacy customers</CardDescription>
         </CardHeader>
         <CardContent>
-          <CustomerTable 
+          <CustomerTableWithFilter 
             customers={customers} 
             onEdit={openEditDialog}
             onDelete={handleDeleteCustomer}
