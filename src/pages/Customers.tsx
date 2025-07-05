@@ -144,6 +144,7 @@ const Customers = () => {
         open={isAddDialogOpen}
         onOpenChange={setIsAddDialogOpen}
         onSave={handleAddCustomer}
+        title="Add New Customer"
       />
 
       <CustomerFormDialog
@@ -151,12 +152,14 @@ const Customers = () => {
         onOpenChange={setIsEditDialogOpen}
         onSave={handleEditCustomer}
         customer={currentCustomer}
+        title="Edit Customer"
       />
 
       {currentCustomer && (
         <CustomerViewDialog
           open={isViewDialogOpen}
           onOpenChange={setIsViewDialogOpen}
+          onEdit={openEditDialog}
           customer={{
             ...currentCustomer,
             dateRegistered: currentCustomer.date_registered,
