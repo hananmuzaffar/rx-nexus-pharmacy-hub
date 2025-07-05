@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -106,7 +107,7 @@ const CustomerViewDialog = ({ open, onOpenChange, customer, onEdit }: CustomerVi
                     {prescriptions.map((prescription) => (
                       <tr key={prescription.id} className="border-t">
                         <td className="py-2 px-4">{prescription.date}</td>
-                        <td className="py-2 px-4">{prescription.doctorName}</td>
+                        <td className="py-2 px-4">{prescription.doctor_name}</td>
                         <td className="py-2 px-4">
                           {prescription.medications.map(med => med.name).join(', ')}
                         </td>
@@ -149,8 +150,8 @@ const CustomerViewDialog = ({ open, onOpenChange, customer, onEdit }: CustomerVi
                     {ePrescriptions.map((prescription) => (
                       <tr key={prescription.id} className="border-t">
                         <td className="py-2 px-4">{prescription.date}</td>
-                        <td className="py-2 px-4">{prescription.doctorName}</td>
-                        <td className="py-2 px-4">{prescription.hospitalName}</td>
+                        <td className="py-2 px-4">{prescription.doctor_name}</td>
+                        <td className="py-2 px-4">{prescription.hospital_name}</td>
                         <td className="py-2 px-4">
                           <span className={`inline-block px-2 py-1 rounded-full text-xs ${
                             prescription.status === 'processed' ? 'bg-green-100 text-green-800' :
@@ -194,13 +195,13 @@ const CustomerViewDialog = ({ open, onOpenChange, customer, onEdit }: CustomerVi
                         <td className="py-2 px-4">
                           {sale.items.length} {sale.items.length === 1 ? 'item' : 'items'}
                         </td>
-                        <td className="py-2 px-4 text-right">₹{sale.totalAmount.toFixed(2)}</td>
+                        <td className="py-2 px-4 text-right">₹{sale.total_amount.toFixed(2)}</td>
                       </tr>
                     ))}
                     <tr className="border-t font-medium">
                       <td colSpan={3} className="py-2 px-4 text-right">Total</td>
                       <td className="py-2 px-4 text-right">
-                        ₹{sales.reduce((sum, sale) => sum + sale.totalAmount, 0).toFixed(2)}
+                        ₹{sales.reduce((sum, sale) => sum + sale.total_amount, 0).toFixed(2)}
                       </td>
                     </tr>
                   </tbody>

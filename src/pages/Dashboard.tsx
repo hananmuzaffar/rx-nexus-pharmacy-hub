@@ -39,28 +39,28 @@ const Dashboard = () => {
           value={`₹${totalSales.toFixed(2)}`}
           description="Total revenue"
           icon={DollarSign}
-          trend={+12.5}
+          trend={{ value: 12.5, isPositive: true }}
         />
         <MetricCard
           title="Customers"
           value={totalCustomers.toString()}
           description="Active customers"
           icon={Users}
-          trend={+2.1}
+          trend={{ value: 2.1, isPositive: true }}
         />
         <MetricCard
           title="Low Stock"
           value={lowStockItems.toString()}
           description="Items need reorder"
           icon={Package}
-          trend={-4.3}
+          trend={{ value: 4.3, isPositive: false }}
         />
         <MetricCard
           title="Prescriptions"
           value={totalPrescriptions.toString()}
           description="Active prescriptions"
           icon={FileText}
-          trend={+8.2}
+          trend={{ value: 8.2, isPositive: true }}
         />
       </div>
 
