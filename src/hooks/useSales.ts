@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { Json } from '@/integrations/supabase/types';
 
 export type Sale = {
   id: string;
@@ -25,7 +26,14 @@ export const useSales = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setSales(data || []);
+      
+      // Transform the data to match our type
+      const transformedData: Sale[] = (data || []).map(item => ({
+        ...item,
+        items: Array.isArray(item.items) ? item.items : []
+      }));
+      
+      setSales(transformedData);
     } catch (error: any) {
       console.error('Error fetching sales:', error);
       toast({
@@ -48,12 +56,17 @@ export const useSales = () => {
 
       if (error) throw error;
       
-      setSales(prev => [data, ...prev]);
+      const transformedData: Sale = {
+        ...data,
+        items: Array.isArray(data.items) ? data.items : []
+      };
+      
+      setSales(prev => [transformedData, ...prev]);
       toast({
         title: "Success",
         description: "Sale recorded successfully",
       });
-      return data;
+      return transformedData;
     } catch (error: any) {
       console.error('Error adding sale:', error);
       toast({

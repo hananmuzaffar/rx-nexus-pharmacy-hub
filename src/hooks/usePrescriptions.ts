@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { Json } from '@/integrations/supabase/types';
 
 export type Prescription = {
   id: string;
@@ -45,8 +46,19 @@ export const usePrescriptions = () => {
       if (prescriptionsResult.error) throw prescriptionsResult.error;
       if (ePrescriptionsResult.error) throw ePrescriptionsResult.error;
 
-      setPrescriptions(prescriptionsResult.data || []);
-      setEPrescriptions(ePrescriptionsResult.data || []);
+      // Transform the data to match our types
+      const transformedPrescriptions: Prescription[] = (prescriptionsResult.data || []).map(item => ({
+        ...item,
+        medications: Array.isArray(item.medications) ? item.medications : []
+      }));
+
+      const transformedEPrescriptions: EPrescription[] = (ePrescriptionsResult.data || []).map(item => ({
+        ...item,
+        medications: Array.isArray(item.medications) ? item.medications : []
+      }));
+
+      setPrescriptions(transformedPrescriptions);
+      setEPrescriptions(transformedEPrescriptions);
     } catch (error: any) {
       console.error('Error fetching prescriptions:', error);
       toast({
@@ -69,12 +81,17 @@ export const usePrescriptions = () => {
 
       if (error) throw error;
       
-      setPrescriptions(prev => [data, ...prev]);
+      const transformedData: Prescription = {
+        ...data,
+        medications: Array.isArray(data.medications) ? data.medications : []
+      };
+      
+      setPrescriptions(prev => [transformedData, ...prev]);
       toast({
         title: "Success",
         description: "Prescription added successfully",
       });
-      return data;
+      return transformedData;
     } catch (error: any) {
       console.error('Error adding prescription:', error);
       toast({
@@ -96,12 +113,17 @@ export const usePrescriptions = () => {
 
       if (error) throw error;
       
-      setEPrescriptions(prev => [data, ...prev]);
+      const transformedData: EPrescription = {
+        ...data,
+        medications: Array.isArray(data.medications) ? data.medications : []
+      };
+      
+      setEPrescriptions(prev => [transformedData, ...prev]);
       toast({
         title: "Success",
         description: "E-Prescription added successfully",
       });
-      return data;
+      return transformedData;
     } catch (error: any) {
       console.error('Error adding e-prescription:', error);
       toast({
