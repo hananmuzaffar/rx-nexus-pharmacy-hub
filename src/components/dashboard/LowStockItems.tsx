@@ -6,27 +6,17 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-
-interface StockItem {
-  id: string;
-  name: string;
-  currentStock: number;
-  minStock: number;
-  percentRemaining: number;
-}
-
-const lowStockItems: StockItem[] = [
-  { id: 'MED101', name: 'Paracetamol 500mg', currentStock: 15, minStock: 50, percentRemaining: 30 },
-  { id: 'MED102', name: 'Ibuprofen 400mg', currentStock: 10, minStock: 40, percentRemaining: 25 },
-  { id: 'MED103', name: 'Cetirizine 10mg', currentStock: 5, minStock: 30, percentRemaining: 16 },
-  { id: 'MED104', name: 'Omeprazole 20mg', currentStock: 8, minStock: 35, percentRemaining: 23 },
-];
+import { useInventory } from '@/hooks/useInventory';
 
 const LowStockItems = () => {
   const navigate = useNavigate();
+  const { items, loading, refetch } = useInventory();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
 
-  const handleReorder = (id: string, name: string) => {
+  // Filter items that are at or below reorder level
+  const lowStockItems = items.filter(item => item.stock <= item.reorder_level).slice(0, 4);
+
+  const handleReorder = (id: number, name: string) => {
     toast({
       title: "Reorder initiated",
       description: `Added ${name} to your purchase order list.`,
@@ -37,17 +27,39 @@ const LowStockItems = () => {
     navigate("/inventory", { state: { filter: "lowStock" } });
   };
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsRefreshing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsRefreshing(false);
+    try {
+      await refetch();
       toast({
         title: "Stock data refreshed",
         description: "Low stock inventory has been updated.",
       });
-    }, 1000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to refresh stock data.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <Card className="h-full">
+        <CardHeader>
+          <CardTitle className="text-lg font-medium">Low Stock Alerts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            Loading stock data...
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="h-full">
@@ -59,10 +71,9 @@ const LowStockItems = () => {
             size="icon" 
             className="ml-2 h-8 w-8"
             onClick={handleRefresh}
-            isLoading={isRefreshing}
-            tooltip="Refresh stock data"
+            disabled={isRefreshing}
           >
-            <RefreshCw size={16} />
+            <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
           </Button>
         </div>
         <Button variant="ghost" size="sm" className="text-xs gap-1" onClick={handleViewAll}>
@@ -70,32 +81,42 @@ const LowStockItems = () => {
         </Button>
       </CardHeader>
       <CardContent className="space-y-4">
-        {lowStockItems.map((item) => (
-          <div key={item.id} className="border rounded-lg p-4">
-            <div className="flex justify-between items-center mb-2">
-              <div className="flex items-center">
-                <PackageMinus size={16} className="text-amber-500" />
-                <span className="font-medium ml-2">{item.name}</span>
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-7 text-xs"
-                onClick={() => handleReorder(item.id, item.name)}
-              >
-                Reorder
-              </Button>
-            </div>
-            
-            <div className="mb-1.5">
-              <div className="flex justify-between text-xs mb-1.5">
-                <span>Current: {item.currentStock} units</span>
-                <span>Min: {item.minStock} units</span>
-              </div>
-              <Progress value={item.percentRemaining} className="h-2" />
-            </div>
+        {lowStockItems.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            No low stock items found
           </div>
-        ))}
+        ) : (
+          lowStockItems.map((item) => {
+            const percentRemaining = item.reorder_level > 0 ? Math.max(0, (item.stock / item.reorder_level) * 100) : 0;
+            
+            return (
+              <div key={item.id} className="border rounded-lg p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <div className="flex items-center">
+                    <PackageMinus size={16} className="text-amber-500" />
+                    <span className="font-medium ml-2">{item.name}</span>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="h-7 text-xs"
+                    onClick={() => handleReorder(item.id, item.name)}
+                  >
+                    Reorder
+                  </Button>
+                </div>
+                
+                <div className="mb-1.5">
+                  <div className="flex justify-between text-xs mb-1.5">
+                    <span>Current: {item.stock} units</span>
+                    <span>Min: {item.reorder_level} units</span>
+                  </div>
+                  <Progress value={percentRemaining} className="h-2" />
+                </div>
+              </div>
+            );
+          })
+        )}
       </CardContent>
     </Card>
   );
