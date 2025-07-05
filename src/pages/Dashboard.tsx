@@ -1,85 +1,96 @@
 
 import React from 'react';
-import { 
-  Package, 
-  CreditCard, 
-  Users, 
-  FileText, 
-  ShieldCheck
-} from 'lucide-react';
-import MetricCard from '@/components/dashboard/MetricCard';
-import RecentSalesList from '@/components/dashboard/RecentSalesList';
-import ExpiryAlerts from '@/components/dashboard/ExpiryAlerts';
-import LowStockItems from '@/components/dashboard/LowStockItems';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DollarSign, Users, Package, FileText } from "lucide-react";
 import SalesChart from '@/components/dashboard/SalesChart';
-import { useInventoryStore } from '@/stores/inventoryStore';
-import { useSalesStore } from '@/stores/salesStore';
-import { useCustomerStore } from '@/stores/customerStore';
+import RecentSalesList from '@/components/dashboard/RecentSalesList';
+import LowStockItems from '@/components/dashboard/LowStockItems';
+import ExpiryAlerts from '@/components/dashboard/ExpiryAlerts';
+import MetricCard from '@/components/dashboard/MetricCard';
+import { useDashboard } from '@/hooks/useDashboard';
 
 const Dashboard = () => {
-  const { items } = useInventoryStore();
-  const { sales, getTodaySales, getMonthSales, getUniqueCustomerCount } = useSalesStore();
-  const { customers } = useCustomerStore();
-  
-  // Calculate metrics from real data
-  const totalInventoryItems = items.length;
-  const todaySales = getTodaySales();
-  const monthSales = getMonthSales();
-  const activeCustomers = getUniqueCustomerCount();
-  
-  // Pending prescriptions (in a real app this would come from a prescription store)
-  const pendingPrescriptions = 24;
-  
+  const {
+    totalSales,
+    totalCustomers,
+    lowStockItems,
+    totalPrescriptions,
+    recentSales,
+    expiringItems,
+    salesData,
+    loading
+  } = useDashboard();
+
+  if (loading) {
+    return <div className="flex items-center justify-center h-96">Loading dashboard...</div>;
+  }
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome back to your pharmacy management system.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-muted-foreground">Welcome back! Here's what's happening at your pharmacy.</p>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Metrics Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard
-          title="Inventory Items"
-          value={totalInventoryItems.toString()}
-          icon={<Package size={20} />}
-          trend={{ value: 12, isPositive: true }}
+          title="Total Sales"
+          value={`₹${totalSales.toFixed(2)}`}
+          description="Total revenue"
+          icon={DollarSign}
+          trend={+12.5}
         />
         <MetricCard
-          title="Today's Sales"
-          value={`₹${todaySales.toFixed(2)}`}
-          icon={<CreditCard size={20} />}
-          trend={{ value: 8, isPositive: true }}
+          title="Customers"
+          value={totalCustomers.toString()}
+          description="Active customers"
+          icon={Users}
+          trend={+2.1}
         />
         <MetricCard
-          title="Active Customers"
-          value={activeCustomers.toString()}
-          icon={<Users size={20} />}
-          trend={{ value: 5, isPositive: true }}
+          title="Low Stock"
+          value={lowStockItems.toString()}
+          description="Items need reorder"
+          icon={Package}
+          trend={-4.3}
         />
         <MetricCard
-          title="Pending Prescriptions"
-          value={pendingPrescriptions.toString()}
-          icon={<FileText size={20} />}
-          trend={{ value: 3, isPositive: false }}
+          title="Prescriptions"
+          value={totalPrescriptions.toString()}
+          description="Active prescriptions"
+          icon={FileText}
+          trend={+8.2}
         />
       </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <SalesChart />
-        </div>
-        <div className="lg:col-span-1">
-          <ExpiryAlerts />
-        </div>
+
+      {/* Charts and Lists */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4">
+          <CardHeader>
+            <CardTitle>Sales Overview</CardTitle>
+            <CardDescription>Last 7 days sales performance</CardDescription>
+          </CardHeader>
+          <CardContent className="pl-2">
+            <SalesChart data={salesData} />
+          </CardContent>
+        </Card>
+        
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Recent Sales</CardTitle>
+            <CardDescription>Latest transactions</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RecentSalesList sales={recentSales} />
+          </CardContent>
+        </Card>
       </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <RecentSalesList />
-        </div>
-        <div className="lg:col-span-1">
-          <LowStockItems />
-        </div>
+
+      {/* Alerts */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <LowStockItems />
+        <ExpiryAlerts items={expiringItems} />
       </div>
     </div>
   );

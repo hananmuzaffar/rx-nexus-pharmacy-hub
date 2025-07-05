@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Customer } from '@/stores/customerStore';
-import { usePrescriptionStore } from '@/components/prescriptions/PrescriptionData';
-import { useSalesStore } from '@/stores/salesStore';
+import { Customer } from '@/hooks/useCustomers';
+import { usePrescriptions } from '@/hooks/usePrescriptions';
+import { useSales } from '@/hooks/useSales';
 
 interface CustomerViewDialogProps {
   open: boolean;
@@ -16,8 +15,8 @@ interface CustomerViewDialogProps {
 
 const CustomerViewDialog = ({ open, onOpenChange, customer, onEdit }: CustomerViewDialogProps) => {
   const [activeTab, setActiveTab] = useState('details');
-  const { getPrescriptionsByPatientId, getEPrescriptionsByPatientId } = usePrescriptionStore();
-  const { getSalesByCustomerId } = useSalesStore();
+  const { getPrescriptionsByPatientId, getEPrescriptionsByPatientId } = usePrescriptions();
+  const { getSalesByCustomerId } = useSales();
   
   if (!customer) {
     return null;
@@ -67,11 +66,11 @@ const CustomerViewDialog = ({ open, onOpenChange, customer, onEdit }: CustomerVi
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Date Registered</p>
-                <p>{customer.dateRegistered}</p>
+                <p>{new Date(customer.date_registered).toLocaleDateString()}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Last Visit</p>
-                <p>{customer.lastVisit}</p>
+                <p>{new Date(customer.last_visit).toLocaleDateString()}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Total Prescriptions</p>

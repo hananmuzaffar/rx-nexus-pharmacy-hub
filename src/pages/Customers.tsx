@@ -3,26 +3,14 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Users, UserPlus, Calendar } from "lucide-react";
-import { customers as initialCustomers } from '@/components/purchases/PurchaseData';
 import CustomerTable from '@/components/customers/CustomerTable';
 import CustomerViewDialog from '@/components/customers/CustomerViewDialog';
 import CustomerFormDialog from '@/components/customers/CustomerFormDialog';
 import { toast } from "@/hooks/use-toast";
-import { useCustomerStore } from "@/stores/customerStore";
-
-type Customer = {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  dateRegistered: string;
-  prescriptions: number;
-  lastVisit: string;
-}
+import { useCustomers, Customer } from "@/hooks/useCustomers";
 
 const Customers = () => {
-  const { customers, addCustomer, updateCustomer, deleteCustomer } = useCustomerStore();
+  const { customers, loading, addCustomer, updateCustomer, deleteCustomer } = useCustomers();
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -31,7 +19,7 @@ const Customers = () => {
   // Calculate customer metrics
   const totalCustomers = customers.length;
   const newCustomersThisMonth = customers.filter(customer => {
-    const registeredDate = new Date(customer.dateRegistered);
+    const registeredDate = new Date(customer.date_registered);
     const today = new Date();
     return (
       registeredDate.getMonth() === today.getMonth() &&
@@ -40,7 +28,7 @@ const Customers = () => {
   }).length;
 
   const visitorsThisWeek = customers.filter(customer => {
-    const visitDate = new Date(customer.lastVisit);
+    const visitDate = new Date(customer.last_visit);
     const today = new Date();
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(today.getDate() - 7);
@@ -61,52 +49,50 @@ const Customers = () => {
     setIsEditDialogOpen(true);
   };
 
-  const handleDeleteCustomer = (id: number) => {
-    deleteCustomer(id);
-    
-    toast({
-      title: "Customer Deleted",
-      description: "The customer has been removed successfully.",
-    });
+  const handleDeleteCustomer = async (id: number) => {
+    try {
+      await deleteCustomer(id);
+    } catch (error) {
+      // Error already handled in hook
+    }
   };
 
   const handleAddNewCustomer = () => {
+    setSelectedCustomer(null);
     setIsAddDialogOpen(true);
   };
 
-  const handleSaveCustomer = (customerData: Partial<Customer>) => {
-    if (selectedCustomer && customerData.id) {
-      // Update existing customer
-      updateCustomer({ ...customerData, id: selectedCustomer.id } as Customer);
-      
-      toast({
-        title: "Customer Updated",
-        description: "Customer information has been updated successfully.",
-      });
-    } else {
-      // Add new customer
-      const today = new Date().toISOString();
-      
-      const newCustomer: Customer = {
-        id: Math.max(0, ...customers.map(c => c.id)) + 1,
-        name: customerData.name || "New Customer",
-        email: customerData.email || "",
-        phone: customerData.phone || "",
-        address: customerData.address || "",
-        dateRegistered: today,
-        prescriptions: 0,
-        lastVisit: today,
-        ...customerData
-      };
-      
-      addCustomer(newCustomer);
-      
-      toast({
-        title: "Customer Added",
-        description: "New customer has been added successfully.",
-      });
+  const handleSaveCustomer = async (customerData: Partial<Customer>) => {
+    try {
+      if (selectedCustomer && customerData.id) {
+        // Update existing customer
+        await updateCustomer(selectedCustomer.id, customerData);
+        setIsEditDialogOpen(false);
+      } else {
+        // Add new customer
+        const newCustomerData = {
+          name: customerData.name || "New Customer",
+          email: customerData.email || "",
+          phone: customerData.phone || "",
+          address: customerData.address || "",
+          date_registered: new Date().toISOString(),
+          prescriptions: 0,
+          last_visit: new Date().toISOString(),
+          ...customerData
+        };
+        
+        await addCustomer(newCustomerData);
+        setIsAddDialogOpen(false);
+      }
+      setSelectedCustomer(null);
+    } catch (error) {
+      // Error already handled in hooks
     }
   };
+
+  if (loading) {
+    return <div className="flex items-center justify-center h-96">Loading customers...</div>;
+  }
 
   return (
     <div className="space-y-4">

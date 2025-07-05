@@ -9,6 +9,193 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      customers: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          date_registered: string | null
+          email: string | null
+          id: number
+          last_visit: string | null
+          name: string
+          phone: string | null
+          prescriptions: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          date_registered?: string | null
+          email?: string | null
+          id?: number
+          last_visit?: string | null
+          name: string
+          phone?: string | null
+          prescriptions?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          date_registered?: string | null
+          email?: string | null
+          id?: number
+          last_visit?: string | null
+          name?: string
+          phone?: string | null
+          prescriptions?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      e_prescriptions: {
+        Row: {
+          created_at: string | null
+          date: string | null
+          doctor_name: string
+          hospital_name: string
+          id: string
+          medications: Json
+          notes: string | null
+          patient_id: number | null
+          patient_name: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date?: string | null
+          doctor_name: string
+          hospital_name: string
+          id: string
+          medications: Json
+          notes?: string | null
+          patient_id?: number | null
+          patient_name: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string | null
+          doctor_name?: string
+          hospital_name?: string
+          id?: string
+          medications?: Json
+          notes?: string | null
+          patient_id?: number | null
+          patient_name?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "e_prescriptions_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_items: {
+        Row: {
+          category: string
+          created_at: string | null
+          expiry_date: string | null
+          id: number
+          manufacturer: string | null
+          medicine_type: string | null
+          name: string
+          reorder_level: number
+          sku: string
+          stock: number
+          strip_price: number | null
+          tablets_per_strip: number | null
+          unit_price: number
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          expiry_date?: string | null
+          id?: number
+          manufacturer?: string | null
+          medicine_type?: string | null
+          name: string
+          reorder_level?: number
+          sku: string
+          stock?: number
+          strip_price?: number | null
+          tablets_per_strip?: number | null
+          unit_price?: number
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          expiry_date?: string | null
+          id?: number
+          manufacturer?: string | null
+          medicine_type?: string | null
+          name?: string
+          reorder_level?: number
+          sku?: string
+          stock?: number
+          strip_price?: number | null
+          tablets_per_strip?: number | null
+          unit_price?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      prescriptions: {
+        Row: {
+          created_at: string | null
+          date: string | null
+          doctor_name: string
+          id: string
+          medications: Json
+          notes: string | null
+          patient_id: number | null
+          patient_name: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date?: string | null
+          doctor_name: string
+          id: string
+          medications: Json
+          notes?: string | null
+          patient_id?: number | null
+          patient_name: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string | null
+          doctor_name?: string
+          id?: string
+          medications?: Json
+          notes?: string | null
+          patient_id?: number | null
+          patient_name?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescriptions_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -36,6 +223,160 @@ export type Database = {
           role?: string
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      purchase_orders: {
+        Row: {
+          created_at: string | null
+          date: string
+          id: string
+          items: number
+          status: string | null
+          supplier_id: number | null
+          supplier_name: string
+          total: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          id: string
+          items: number
+          status?: string | null
+          supplier_id?: number | null
+          supplier_name: string
+          total: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          id?: string
+          items?: number
+          status?: string | null
+          supplier_id?: number | null
+          supplier_name?: string
+          total?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_orders_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      returns: {
+        Row: {
+          created_at: string | null
+          customer: string
+          date: string | null
+          id: string
+          product: string
+          quantity: number
+          reason: string
+          refund_amount: number
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer: string
+          date?: string | null
+          id: string
+          product: string
+          quantity: number
+          reason: string
+          refund_amount: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer?: string
+          date?: string | null
+          id?: string
+          product?: string
+          quantity?: number
+          reason?: string
+          refund_amount?: number
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      sales: {
+        Row: {
+          created_at: string | null
+          customer_id: number | null
+          date: string | null
+          id: string
+          items: Json
+          payment_method: string | null
+          total_amount: number
+        }
+        Insert: {
+          created_at?: string | null
+          customer_id?: number | null
+          date?: string | null
+          id: string
+          items: Json
+          payment_method?: string | null
+          total_amount: number
+        }
+        Update: {
+          created_at?: string | null
+          customer_id?: number | null
+          date?: string | null
+          id?: string
+          items?: Json
+          payment_method?: string | null
+          total_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      suppliers: {
+        Row: {
+          address: string | null
+          contact: string | null
+          created_at: string | null
+          email: string | null
+          id: number
+          name: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          contact?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          name: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          contact?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          name?: string
+          phone?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
