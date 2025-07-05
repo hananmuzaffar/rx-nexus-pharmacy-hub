@@ -14,16 +14,21 @@ interface ExpiryItem {
   daysRemaining: number;
 }
 
-const expiryItems: ExpiryItem[] = [
+interface ExpiryAlertsProps {
+  items?: ExpiryItem[];
+}
+
+const defaultExpiryItems: ExpiryItem[] = [
   { id: 'MED001', name: 'Amoxicillin 500mg', quantity: 200, expiryDate: '2025-05-10', daysRemaining: 30 },
   { id: 'MED002', name: 'Lisinopril 10mg', quantity: 150, expiryDate: '2025-05-15', daysRemaining: 35 },
   { id: 'MED003', name: 'Metformin 850mg', quantity: 120, expiryDate: '2025-04-20', daysRemaining: 10 },
   { id: 'MED004', name: 'Atorvastatin 20mg', quantity: 80, expiryDate: '2025-04-15', daysRemaining: 5 },
 ];
 
-const ExpiryAlerts = () => {
+const ExpiryAlerts = ({ items }: ExpiryAlertsProps) => {
   const navigate = useNavigate();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const expiryItems = items || defaultExpiryItems;
 
   const handleAction = (item: ExpiryItem) => {
     toast({
@@ -58,10 +63,9 @@ const ExpiryAlerts = () => {
             size="icon" 
             className="ml-2 h-8 w-8"
             onClick={handleRefresh}
-            isLoading={isRefreshing}
-            tooltip="Refresh expiry data"
+            disabled={isRefreshing}
           >
-            <RefreshCw size={16} />
+            <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
           </Button>
         </div>
         <Button variant="ghost" size="sm" className="text-xs gap-1" onClick={handleViewAll}>

@@ -3,17 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, Edit, Trash, Search, Filter } from "lucide-react";
-
-type Customer = {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  dateRegistered: string;
-  prescriptions: number;
-  lastVisit: string;
-}
+import { Customer } from '@/hooks/useCustomers';
 
 interface CustomerTableProps {
   customers: Customer[];
@@ -104,9 +94,9 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
                   <td className="p-2 align-middle">{customer.name}</td>
                   <td className="p-2 align-middle">{customer.email}</td>
                   <td className="p-2 align-middle">{customer.phone}</td>
-                  <td className="p-2 align-middle">{new Date(customer.dateRegistered).toLocaleDateString()}</td>
+                  <td className="p-2 align-middle">{new Date(customer.date_registered).toLocaleDateString()}</td>
                   <td className="p-2 align-middle">{customer.prescriptions}</td>
-                  <td className="p-2 align-middle">{new Date(customer.lastVisit).toLocaleDateString()}</td>
+                  <td className="p-2 align-middle">{new Date(customer.last_visit).toLocaleDateString()}</td>
                   <td className="p-2 align-middle">
                     <div className="flex items-center justify-center space-x-2">
                       <Button variant="ghost" size="sm" onClick={() => onView(customer)}>

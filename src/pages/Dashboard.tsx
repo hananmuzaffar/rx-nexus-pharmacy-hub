@@ -37,28 +37,24 @@ const Dashboard = () => {
         <MetricCard
           title="Total Sales"
           value={`₹${totalSales.toFixed(2)}`}
-          description="Total revenue"
           icon={<DollarSign className="h-4 w-4" />}
           trend={{ value: 12.5, isPositive: true }}
         />
         <MetricCard
           title="Customers"
           value={totalCustomers.toString()}
-          description="Active customers"
           icon={<Users className="h-4 w-4" />}
           trend={{ value: 2.1, isPositive: true }}
         />
         <MetricCard
           title="Low Stock"
           value={lowStockItems.toString()}
-          description="Items need reorder"
           icon={<Package className="h-4 w-4" />}
           trend={{ value: 4.3, isPositive: false }}
         />
         <MetricCard
           title="Prescriptions"
           value={totalPrescriptions.toString()}
-          description="Active prescriptions"
           icon={<FileText className="h-4 w-4" />}
           trend={{ value: 8.2, isPositive: true }}
         />
@@ -72,7 +68,7 @@ const Dashboard = () => {
             <CardDescription>Last 7 days sales performance</CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
-            <SalesChart data={salesData} />
+            <SalesChart />
           </CardContent>
         </Card>
         
@@ -82,7 +78,7 @@ const Dashboard = () => {
             <CardDescription>Latest transactions</CardDescription>
           </CardHeader>
           <CardContent>
-            <RecentSalesList sales={recentSales} />
+            <RecentSalesList />
           </CardContent>
         </Card>
       </div>
@@ -90,7 +86,7 @@ const Dashboard = () => {
       {/* Alerts */}
       <div className="grid gap-4 md:grid-cols-2">
         <LowStockItems />
-        <ExpiryAlerts items={expiringItems} />
+        <ExpiryAlerts />
       </div>
     </div>
   );

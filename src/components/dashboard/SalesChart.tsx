@@ -1,8 +1,11 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+interface SalesChartProps {
+  data?: any[];
+}
 
 const dailyData = [
   { name: 'Mon', sales: 4000 },
@@ -28,85 +31,80 @@ const monthlyData = [
   { name: 'Apr', sales: 135000 },
 ];
 
-const SalesChart = () => {
+const SalesChart = ({ data }: SalesChartProps) => {
+  const chartData = data || dailyData;
+
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="text-lg font-medium">Sales Overview</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="daily">
-          <TabsList className="mb-4">
-            <TabsTrigger value="daily">Daily</TabsTrigger>
-            <TabsTrigger value="weekly">Weekly</TabsTrigger>
-            <TabsTrigger value="monthly">Monthly</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="daily">
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={dailyData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                  <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tickFormatter={(value) => `₹${value}`}
-                  />
-                  <Tooltip 
-                    formatter={(value) => [`&#8377${value}`, 'Sales']}
-                    contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
-                  />
-                  <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="weekly">
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={weeklyData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                  <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tickFormatter={(value) => `₹${value}`}
-                  />
-                  <Tooltip 
-                    formatter={(value) => [`₹${value}`, 'Sales']}
-                    contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
-                  />
-                  <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="monthly">
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={monthlyData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                  <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tickFormatter={(value) => `₹${value}`}
-                  />
-                  <Tooltip 
-                    formatter={(value) => [`₹${value}`, 'Sales']}
-                    contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
-                  />
-                  <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+    <Tabs defaultValue="daily">
+      <TabsList className="mb-4">
+        <TabsTrigger value="daily">Daily</TabsTrigger>
+        <TabsTrigger value="weekly">Weekly</TabsTrigger>
+        <TabsTrigger value="monthly">Monthly</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="daily">
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tickFormatter={(value) => `₹${value}`}
+              />
+              <Tooltip 
+                formatter={(value) => [`₹${value}`, 'Sales']}
+                contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
+              />
+              <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </TabsContent>
+      
+      <TabsContent value="weekly">
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={weeklyData}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tickFormatter={(value) => `₹${value}`}
+              />
+              <Tooltip 
+                formatter={(value) => [`₹${value}`, 'Sales']}
+                contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
+              />
+              <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </TabsContent>
+      
+      <TabsContent value="monthly">
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={monthlyData}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="name" axisLine={false} tickLine={false} />
+              <YAxis 
+                axisLine={false} 
+                tickLine={false} 
+                tickFormatter={(value) => `₹${value}`}
+              />
+              <Tooltip 
+                formatter={(value) => [`₹${value}`, 'Sales']}
+                contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0' }}
+              />
+              <Bar dataKey="sales" fill="#0e99eb" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 };
 
