@@ -9,11 +9,12 @@ import { useSalesStore } from '@/stores/salesStore';
 
 interface CustomerViewDialogProps {
   open: boolean;
-  onClose: () => void;
+  onOpenChange: (open: boolean) => void;
   customer: Customer | null;
+  onEdit: (customer: Customer) => void;
 }
 
-const CustomerViewDialog = ({ open, onClose, customer }: CustomerViewDialogProps) => {
+const CustomerViewDialog = ({ open, onOpenChange, customer, onEdit }: CustomerViewDialogProps) => {
   const [activeTab, setActiveTab] = useState('details');
   const { getPrescriptionsByPatientId, getEPrescriptionsByPatientId } = usePrescriptionStore();
   const { getSalesByCustomerId } = useSalesStore();
@@ -27,8 +28,12 @@ const CustomerViewDialog = ({ open, onClose, customer }: CustomerViewDialogProps
   const ePrescriptions = getEPrescriptionsByPatientId(customer.id);
   const sales = getSalesByCustomerId(customer.id);
 
+  const handleClose = () => {
+    onOpenChange(false);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Customer Information</DialogTitle>
@@ -78,8 +83,11 @@ const CustomerViewDialog = ({ open, onClose, customer }: CustomerViewDialogProps
               </div>
             </div>
             
-            <div className="flex justify-end">
-              <Button variant="outline" onClick={onClose}>Close</Button>
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => onEdit(customer)}>
+                Edit Customer
+              </Button>
+              <Button variant="outline" onClick={handleClose}>Close</Button>
             </div>
           </TabsContent>
           
@@ -122,7 +130,7 @@ const CustomerViewDialog = ({ open, onClose, customer }: CustomerViewDialogProps
             )}
             
             <div className="flex justify-end">
-              <Button variant="outline" onClick={onClose}>Close</Button>
+              <Button variant="outline" onClick={handleClose}>Close</Button>
             </div>
           </TabsContent>
           
@@ -163,7 +171,7 @@ const CustomerViewDialog = ({ open, onClose, customer }: CustomerViewDialogProps
             )}
             
             <div className="flex justify-end">
-              <Button variant="outline" onClick={onClose}>Close</Button>
+              <Button variant="outline" onClick={handleClose}>Close</Button>
             </div>
           </TabsContent>
           
@@ -204,7 +212,7 @@ const CustomerViewDialog = ({ open, onClose, customer }: CustomerViewDialogProps
             )}
             
             <div className="flex justify-end">
-              <Button variant="outline" onClick={onClose}>Close</Button>
+              <Button variant="outline" onClick={handleClose}>Close</Button>
             </div>
           </TabsContent>
         </Tabs>
