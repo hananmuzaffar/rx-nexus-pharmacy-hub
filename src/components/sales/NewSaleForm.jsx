@@ -8,7 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
 import { useInventoryStore } from '@/stores/inventoryStore';
 import { Checkbox } from "@/components/ui/checkbox";
-import { createClient } from '@supabase/supabase-js';
+import { useCustomerStore } from '@/stores/customerStore';
 
 const NewSaleForm = ({ onCreateSale, onCancel }) => {
   const { items: inventoryItems, updateStockFromSale } = useInventoryStore();
@@ -28,35 +28,11 @@ const NewSaleForm = ({ onCreateSale, onCancel }) => {
   ]);
   const [newSalePaymentMethod, setNewSalePaymentMethod] = useState('Cash');
 
-  // Get real customers from Supabase
-  const [customers, setCustomers] = useState([]);
+  // Get real customers from customer store
+  const { customers } = useCustomerStore();
   
   useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const supabaseClient = createClient(
-          "https://cqdalqkmzqkfneoeblmh.supabase.co",
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxZGFscWttenFrZm5lb2VibG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyOTEzODMsImV4cCI6MjA1OTg2NzM4M30.JzaHcTkyuT6L4dc6U10AFDUyP9JtBAHl8YGrAq9C024"
-        );
-        
-        const { data, error } = await supabaseClient
-          .from('customers')
-          .select('id, name')
-          .order('name');
-        
-        if (error) throw error;
-        setCustomers(data || []);
-      } catch (error) {
-        console.error('Error fetching customers:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load customers",
-          variant: "destructive"
-        });
-      }
-    };
-    
-    fetchCustomers();
+    // Customers are already available from the store
   }, []);
 
   const addItemToSale = () => {

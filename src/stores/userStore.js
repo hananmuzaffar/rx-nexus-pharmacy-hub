@@ -1,7 +1,6 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { supabase } from '@/integrations/supabase/client';
 
 // Initial users data
 const initialUsers = [
@@ -83,14 +82,39 @@ export const useUserStore = create(
   persist(
     (set, get) => ({
       users: initialUsers,
+      currentUser: null,
+      isAuthenticated: false,
       rolePermissions: rolePermissions,
       customRolePermissions: {}, // For custom permission overrides
       
+      // Authentication methods
+      login: async (email, password) => {
+        try {
+          const user = get().users.find(u => u.email === email);
+          if (user && password === 'password123') { // Demo password
+            set({
+              currentUser: user,
+              isAuthenticated: true
+            });
+            return { success: true, user };
+          } else {
+            return { success: false, error: 'Invalid email or password' };
+          }
+        } catch (error) {
+          return { success: false, error: error.message };
+        }
+      },
+
+      logout: () => {
+        set({
+          currentUser: null,
+          isAuthenticated: false
+        });
+      },
+
       // Add a new user
       addUser: async (user) => {
         try {
-          // Add user to Supabase if possible (email/password should be handled separately)
-          // Store in local state for now
           set((state) => ({
             users: [...state.users, { ...user, id: Date.now().toString() }]
           }));

@@ -5,7 +5,8 @@ import { AlertTriangle, ArrowRight, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
+import { useInventoryStore } from '@/stores/inventoryStore';
+import ExpiryActionDialog from './ExpiryActionDialog';
 
 interface ExpiryItem {
   id: string;
@@ -17,60 +18,41 @@ interface ExpiryItem {
 
 const ExpiryAlerts = () => {
   const navigate = useNavigate();
+  const { items } = useInventoryStore();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [expiryItems, setExpiryItems] = React.useState<ExpiryItem[]>([]);
+  const [selectedItem, setSelectedItem] = React.useState<ExpiryItem | null>(null);
+  const [isActionDialogOpen, setIsActionDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     fetchExpiryItems();
-  }, []);
+  }, [items]);
 
-  const fetchExpiryItems = async () => {
-    try {
-      const supabaseClient = createClient(
-        "https://cqdalqkmzqkfneoeblmh.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxZGFscWttenFrZm5lb2VibG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyOTEzODMsImV4cCI6MjA1OTg2NzM4M30.JzaHcTkyuT6L4dc6U10AFDUyP9JtBAHl8YGrAq9C024"
-      );
-      
-      const { data, error } = await supabaseClient
-        .from('inventory_items')
-        .select('id, name, stock, expiry_date')
-        .not('expiry_date', 'is', null)
-        .order('expiry_date');
+  const fetchExpiryItems = () => {
+    const today = new Date();
+    const expiringItems = items
+      .filter(item => item.expiryDate)
+      .map(item => {
+        const expiryDate = new Date(item.expiryDate);
+        const daysRemaining = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return {
+          id: item.id.toString(),
+          name: item.name,
+          quantity: item.stock,
+          expiryDate: item.expiryDate,
+          daysRemaining
+        };
+      })
+      .filter(item => item.daysRemaining <= 90 && item.daysRemaining >= 0)
+      .sort((a, b) => a.daysRemaining - b.daysRemaining)
+      .slice(0, 4);
 
-      if (error) throw error;
-
-      const today = new Date();
-      const expiringItems = (data || [])
-        .map(item => {
-          const expiryDate = new Date(item.expiry_date);
-          const daysRemaining = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-          return {
-            id: item.id.toString(),
-            name: item.name,
-            quantity: item.stock,
-            expiryDate: item.expiry_date,
-            daysRemaining
-          };
-        })
-        .filter(item => item.daysRemaining <= 90 && item.daysRemaining >= 0)
-        .slice(0, 4);
-
-      setExpiryItems(expiringItems);
-    } catch (error) {
-      console.error('Error fetching expiry items:', error);
-    }
+    setExpiryItems(expiringItems);
   };
 
   const handleAction = (item: ExpiryItem) => {
-    navigate("/returns", { 
-      state: { 
-        prefilledData: {
-          product: item.name,
-          reason: "Expiring soon",
-          quantity: item.quantity
-        }
-      }
-    });
+    setSelectedItem(item);
+    setIsActionDialogOpen(true);
   };
 
   const handleViewAll = () => {
@@ -79,13 +61,14 @@ const ExpiryAlerts = () => {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    fetchExpiryItems().finally(() => {
+    fetchExpiryItems();
+    setTimeout(() => {
       setIsRefreshing(false);
       toast({
         title: "Expiry data refreshed",
         description: "Medication expiry dates have been updated.",
       });
-    });
+    }, 500);
   };
 
   return (
@@ -147,6 +130,12 @@ const ExpiryAlerts = () => {
           </div>
         ))}
       </CardContent>
+
+      <ExpiryActionDialog
+        open={isActionDialogOpen}
+        onClose={() => setIsActionDialogOpen(false)}
+        item={selectedItem}
+      />
     </Card>
   );
 };

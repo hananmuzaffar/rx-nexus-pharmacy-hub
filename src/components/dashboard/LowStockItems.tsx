@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
+import { useInventoryStore } from '@/stores/inventoryStore';
+import ReorderDialog from './ReorderDialog';
 
 interface StockItem {
   id: string;
@@ -18,53 +19,38 @@ interface StockItem {
 
 const LowStockItems = () => {
   const navigate = useNavigate();
+  const { items } = useInventoryStore();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
   const [lowStockItems, setLowStockItems] = React.useState<StockItem[]>([]);
+  const [selectedItem, setSelectedItem] = React.useState<StockItem | null>(null);
+  const [isReorderDialogOpen, setIsReorderDialogOpen] = React.useState(false);
 
   React.useEffect(() => {
     fetchLowStockItems();
-  }, []);
+  }, [items]);
 
-  const fetchLowStockItems = async () => {
-    try {
-      const supabaseClient = createClient(
-        "https://cqdalqkmzqkfneoeblmh.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxZGFscWttenFrZm5lb2VibG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyOTEzODMsImV4cCI6MjA1OTg2NzM4M30.JzaHcTkyuT6L4dc6U10AFDUyP9JtBAHl8YGrAq9C024"
-      );
-      
-      const { data, error } = await supabaseClient
-        .from('inventory_items')
-        .select('id, name, stock, reorder_level')
-        .order('stock');
+  const fetchLowStockItems = () => {
+    const lowStock = items
+      .filter(item => item.stock <= item.reorderLevel)
+      .map(item => ({
+        id: item.id.toString(),
+        name: item.name,
+        currentStock: item.stock,
+        minStock: item.reorderLevel,
+        percentRemaining: Math.round((item.stock / item.reorderLevel) * 100)
+      }))
+      .sort((a, b) => a.percentRemaining - b.percentRemaining)
+      .slice(0, 4);
 
-      if (error) throw error;
-
-      const lowStock = (data || [])
-        .filter(item => item.stock <= item.reorder_level)
-        .map(item => ({
-          id: item.id.toString(),
-          name: item.name,
-          currentStock: item.stock,
-          minStock: item.reorder_level,
-          percentRemaining: Math.round((item.stock / item.reorder_level) * 100)
-        }))
-        .slice(0, 4);
-
-      setLowStockItems(lowStock);
-    } catch (error) {
-      console.error('Error fetching low stock items:', error);
-    }
+    setLowStockItems(lowStock);
   };
 
   const handleReorder = (id: string, name: string) => {
-    navigate("/purchases", { 
-      state: { 
-        prefilledData: {
-          product: name,
-          quantity: 100
-        }
-      }
-    });
+    const item = lowStockItems.find(item => item.id === id);
+    if (item) {
+      setSelectedItem(item);
+      setIsReorderDialogOpen(true);
+    }
   };
 
   const handleViewAll = () => {
@@ -73,13 +59,14 @@ const LowStockItems = () => {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    fetchLowStockItems().finally(() => {
+    fetchLowStockItems();
+    setTimeout(() => {
       setIsRefreshing(false);
       toast({
         title: "Stock data refreshed",
         description: "Low stock inventory has been updated.",
       });
-    });
+    }, 500);
   };
 
   return (
@@ -130,6 +117,12 @@ const LowStockItems = () => {
           </div>
         ))}
       </CardContent>
+
+      <ReorderDialog
+        open={isReorderDialogOpen}
+        onClose={() => setIsReorderDialogOpen(false)}
+        item={selectedItem}
+      />
     </Card>
   );
 };

@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
+import { useSalesStore } from '@/stores/salesStore';
 
 interface Sale {
   id: string;
@@ -18,45 +18,26 @@ interface Sale {
 
 const RecentSalesList = () => {
   const navigate = useNavigate();
+  const { sales } = useSalesStore();
   const [recentSales, setRecentSales] = React.useState<Sale[]>([]);
 
   React.useEffect(() => {
     fetchRecentSales();
-  }, []);
+  }, [sales]);
 
-  const fetchRecentSales = async () => {
-    try {
-      const supabaseClient = createClient(
-        "https://cqdalqkmzqkfneoeblmh.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxZGFscWttenFrZm5lb2VibG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyOTEzODMsImV4cCI6MjA1OTg2NzM4M30.JzaHcTkyuT6L4dc6U10AFDUyP9JtBAHl8YGrAq9C024"
-      );
-      
-      const { data, error } = await supabaseClient
-        .from('sales')
-        .select(`
-          id,
-          total_amount,
-          date,
-          items
-        `)
-        .order('date', { ascending: false })
-        .limit(5);
-
-      if (error) throw error;
-
-      const salesData = (data || []).map((sale: any) => ({
+  const fetchRecentSales = () => {
+    const salesData = sales
+      .slice(0, 5)
+      .map(sale => ({
         id: sale.id,
-        customer: 'Customer',
+        customer: sale.customer || 'Unknown Customer',
         items: Array.isArray(sale.items) ? sale.items.length : 0,
-        total: sale.total_amount,
+        total: sale.totalAmount,
         date: new Date(sale.date).toISOString().split('T')[0],
         status: 'completed' as const
       }));
 
-      setRecentSales(salesData);
-    } catch (error) {
-      console.error('Error fetching recent sales:', error);
-    }
+    setRecentSales(salesData);
   };
   return (
     <Card className="h-full">
