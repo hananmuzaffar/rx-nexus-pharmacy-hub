@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { createClient } from '@supabase/supabase-js';
 
 interface StockItem {
   id: string;
@@ -15,21 +16,54 @@ interface StockItem {
   percentRemaining: number;
 }
 
-const lowStockItems: StockItem[] = [
-  { id: 'MED101', name: 'Paracetamol 500mg', currentStock: 15, minStock: 50, percentRemaining: 30 },
-  { id: 'MED102', name: 'Ibuprofen 400mg', currentStock: 10, minStock: 40, percentRemaining: 25 },
-  { id: 'MED103', name: 'Cetirizine 10mg', currentStock: 5, minStock: 30, percentRemaining: 16 },
-  { id: 'MED104', name: 'Omeprazole 20mg', currentStock: 8, minStock: 35, percentRemaining: 23 },
-];
-
 const LowStockItems = () => {
   const navigate = useNavigate();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [lowStockItems, setLowStockItems] = React.useState<StockItem[]>([]);
+
+  React.useEffect(() => {
+    fetchLowStockItems();
+  }, []);
+
+  const fetchLowStockItems = async () => {
+    try {
+      const supabaseClient = createClient(
+        "https://cqdalqkmzqkfneoeblmh.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxZGFscWttenFrZm5lb2VibG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyOTEzODMsImV4cCI6MjA1OTg2NzM4M30.JzaHcTkyuT6L4dc6U10AFDUyP9JtBAHl8YGrAq9C024"
+      );
+      
+      const { data, error } = await supabaseClient
+        .from('inventory_items')
+        .select('id, name, stock, reorder_level')
+        .order('stock');
+
+      if (error) throw error;
+
+      const lowStock = (data || [])
+        .filter(item => item.stock <= item.reorder_level)
+        .map(item => ({
+          id: item.id.toString(),
+          name: item.name,
+          currentStock: item.stock,
+          minStock: item.reorder_level,
+          percentRemaining: Math.round((item.stock / item.reorder_level) * 100)
+        }))
+        .slice(0, 4);
+
+      setLowStockItems(lowStock);
+    } catch (error) {
+      console.error('Error fetching low stock items:', error);
+    }
+  };
 
   const handleReorder = (id: string, name: string) => {
-    toast({
-      title: "Reorder initiated",
-      description: `Added ${name} to your purchase order list.`,
+    navigate("/purchases", { 
+      state: { 
+        prefilledData: {
+          product: name,
+          quantity: 100
+        }
+      }
     });
   };
 
@@ -39,14 +73,13 @@ const LowStockItems = () => {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    // Simulate API call
-    setTimeout(() => {
+    fetchLowStockItems().finally(() => {
       setIsRefreshing(false);
       toast({
         title: "Stock data refreshed",
         description: "Low stock inventory has been updated.",
       });
-    }, 1000);
+    });
   };
 
   return (
