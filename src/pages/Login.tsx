@@ -5,11 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { useUserStore } from '@/stores/userStore';
+import { useAuth } from '@/hooks/useAuth';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { users, login, isAuthenticated } = useUserStore();
+  const { login, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +32,7 @@ const Login = () => {
           title: "Login Successful",
           description: `Welcome back, ${result.user?.name}!`,
         });
-        navigate('/');
+        navigate('/dashboard');
       } else {
         toast({
           title: "Login Failed",

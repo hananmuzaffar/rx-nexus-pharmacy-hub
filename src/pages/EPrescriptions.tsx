@@ -181,14 +181,16 @@ const EPrescriptions = () => {
           />
         </form>
         <div className="flex items-center space-x-2 w-full sm:w-auto">
-          <Button variant="outline" className="flex items-center">
-            <Filter className="mr-2 h-4 w-4" />
-            Filter
-          </Button>
           <select 
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-[150px]"
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              toast({
+                title: "Filter Applied",
+                description: `Showing ${e.target.value === 'all' ? 'all' : e.target.value} e-prescriptions`,
+              });
+            }}
           >
             <option value="all">All Status</option>
             <option value="new">New</option>

@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Bell, Search, Settings, User, LogOut } from 'lucide-react';
+import { Search, Settings, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from "@/hooks/use-toast";
 import { useInventoryStore } from '@/stores/inventoryStore';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useAuth } from '@/hooks/useAuth';
+import NotificationPanel from './NotificationPanel';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -90,10 +91,7 @@ const Header = () => {
         </form>
       </div>
       <div className="flex items-center space-x-3">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell size={20} />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </Button>
+        <NotificationPanel />
         
         <Button variant="ghost" size="icon" onClick={() => navigate('/settings')}>
           <Settings size={20} />
