@@ -20,14 +20,6 @@ const initialUsers = [
     status: "active",
     lastLogin: "Today, 9:15 AM"
   },
-  {
-    id: "3",
-    name: "Technician",
-    email: "tech@rxnexus.com",
-    role: "Pharmacy Technician",
-    status: "active",
-    lastLogin: "Yesterday, 5:30 PM"
-  }
 ];
 
 // Define role permissions
@@ -54,28 +46,6 @@ const rolePermissions = {
     settings: { view: false, add: false, edit: false, delete: false },
     users: { view: false, add: false, edit: false, delete: false },
   },
-  "Pharmacy Technician": {
-    inventory: { view: true, add: false, edit: false, delete: false },
-    sales: { view: true, add: true, edit: false, delete: false },
-    purchases: { view: true, add: false, edit: false, delete: false },
-    customers: { view: true, add: true, edit: true, delete: false },
-    prescriptions: { view: true, add: false, edit: false, delete: false },
-    returns: { view: true, add: true, edit: false, delete: false },
-    reports: { view: false, add: false, edit: false, delete: false },
-    settings: { view: false, add: false, edit: false, delete: false },
-    users: { view: false, add: false, edit: false, delete: false },
-  },
-  Cashier: {
-    inventory: { view: true, add: false, edit: false, delete: false },
-    sales: { view: true, add: true, edit: false, delete: false },
-    purchases: { view: false, add: false, edit: false, delete: false },
-    customers: { view: true, add: true, edit: false, delete: false },
-    prescriptions: { view: false, add: false, edit: false, delete: false },
-    returns: { view: true, add: true, edit: false, delete: false },
-    reports: { view: false, add: false, edit: false, delete: false },
-    settings: { view: false, add: false, edit: false, delete: false },
-    users: { view: false, add: false, edit: false, delete: false },
-  }
 };
 
 export const useUserStore = create(

@@ -92,40 +92,40 @@ export const inventoryItems = [
 export const customers = [
   {
     id: 1,
-    name: "John Smith",
-    email: "john.smith@example.com",
-    phone: "(555) 123-4567",
-    address: "123 Maple Street, Anytown, ST 12345",
+    name: "Abdul Salaam,",
+    email: "salaam@gmail.com",
+    phone: "1234567890",
+    address: "Srinagar",
     dateRegistered: "2024-01-15",
     prescriptions: 3,
     lastVisit: "2025-03-28"
   },
   {
     id: 2,
-    name: "Maria Rodriguez",
-    email: "maria.r@example.com",
-    phone: "(555) 987-6543",
-    address: "456 Oak Avenue, Othertown, ST 67890",
+    name: "Basit",
+    email: "basit@gmail.com",
+    phone: "1234567890",
+    address: "Srinagar",
     dateRegistered: "2023-11-10",
     prescriptions: 5,
     lastVisit: "2025-04-02"
   },
   {
     id: 3,
-    name: "Robert Wilson",
-    email: "rwilson@example.com",
-    phone: "(555) 456-7890",
-    address: "789 Elm Boulevard, Somewhere, ST 54321",
+    name: "Nayeem",
+    email: "nayeem@gmail.com",
+    phone: "1234567890",
+    address: "Srinagar",
     dateRegistered: "2024-02-22",
     prescriptions: 1,
     lastVisit: "2025-03-15"
   },
   {
     id: 4,
-    name: "Sarah Johnson",
-    email: "sjohnson@example.com",
-    phone: "(555) 789-0123",
-    address: "321 Pine Drive, Nowhere, ST 09876",
+    name: "Hussain",
+    email: "hussain@gmail.com",
+    phone: "1234567890",
+    address: "Srinagar",
     dateRegistered: "2023-09-05",
     prescriptions: 7,
     lastVisit: "2025-04-05"
@@ -136,8 +136,8 @@ export const customers = [
 export const prescriptions = [
   {
     id: "RX-2025-001",
-    patient: "John Smith",
-    doctor: "Dr. Amanda Chen",
+    patient: "Abdul Salaam",
+    doctor: "Dr. Amaan",
     medication: "Amoxicillin 250mg",
     dosage: "1 tablet 3 times daily",
     quantity: 30,
@@ -147,8 +147,8 @@ export const prescriptions = [
   },
   {
     id: "RX-2025-002",
-    patient: "Maria Rodriguez",
-    doctor: "Dr. James Wilson",
+    patient: "Nayeem",
+    doctor: "Dr. Naseer Mir",
     medication: "Lisinopril 10mg",
     dosage: "1 tablet daily",
     quantity: 30,
@@ -158,8 +158,8 @@ export const prescriptions = [
   },
   {
     id: "RX-2025-003",
-    patient: "Robert Wilson",
-    doctor: "Dr. Sarah Johnson",
+    patient: "Basit",
+    doctor: "Dr. M. Ashraf Khan",
     medication: "Metformin 500mg",
     dosage: "1 tablet twice daily",
     quantity: 60,
@@ -169,8 +169,8 @@ export const prescriptions = [
   },
   {
     id: "RX-2025-004",
-    patient: "Sarah Johnson",
-    doctor: "Dr. Michael Brown",
+    patient: "Hussain",
+    doctor: "Dr. Haseeb",
     medication: "Atorvastatin 20mg",
     dosage: "1 tablet at bedtime",
     quantity: 30,
@@ -185,7 +185,7 @@ export const returns = [
   {
     id: "RTN-2025-001",
     product: "Paracetamol 500mg",
-    customer: "John Smith",
+    customer: "Abdul Salaam",
     quantity: 10,
     reason: "Expired product",
     date: "2025-03-30",
@@ -195,7 +195,7 @@ export const returns = [
   {
     id: "RTN-2025-002",
     product: "Cetirizine 10mg",
-    customer: "Maria Rodriguez",
+    customer: "Hussain",
     quantity: 5,
     reason: "Wrong medication",
     date: "2025-04-01",
@@ -205,7 +205,7 @@ export const returns = [
   {
     id: "RTN-2025-003",
     product: "Amoxicillin 250mg",
-    customer: "Sarah Johnson",
+    customer: "Nayeem",
     quantity: 15,
     reason: "Adverse reaction",
     date: "2025-04-03",
@@ -219,7 +219,7 @@ export const sales = [
   {
     id: "SL-2025-001",
     date: "2025-04-05",
-    customer: "John Smith",
+    customer: "Abdul Salaam",
     items: [
       { product: "Paracetamol 500mg", quantity: 2, price: 4.99, total: 9.98 },
       { product: "Cetirizine 10mg", quantity: 1, price: 3.25, total: 3.25 }
@@ -230,7 +230,7 @@ export const sales = [
   {
     id: "SL-2025-002",
     date: "2025-04-05",
-    customer: "Maria Rodriguez",
+    customer: "Hussain",
     items: [
       { product: "Amoxicillin 250mg", quantity: 1, price: 8.50, total: 8.50 },
       { product: "Ibuprofen 400mg", quantity: 1, price: 5.49, total: 5.49 }
@@ -241,7 +241,7 @@ export const sales = [
   {
     id: "SL-2025-003",
     date: "2025-04-04",
-    customer: "Robert Wilson",
+    customer: "Nayeem",
     items: [
       { product: "Omeprazole 20mg", quantity: 1, price: 7.99, total: 7.99 }
     ],
@@ -251,7 +251,7 @@ export const sales = [
   {
     id: "SL-2025-004",
     date: "2025-04-04",
-    customer: "Sarah Johnson",
+    customer: "Basit",
     items: [
       { product: "Paracetamol 500mg", quantity: 3, price: 4.99, total: 14.97 },
       { product: "Ibuprofen 400mg", quantity: 2, price: 5.49, total: 10.98 }

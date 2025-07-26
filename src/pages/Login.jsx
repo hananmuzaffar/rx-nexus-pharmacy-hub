@@ -56,7 +56,7 @@ const Login = () => {
       } else {
         toast({
           title: "Login successful",
-          description: "Welcome to Pharmacy Manager",
+          description: "Welcome to RxNexus",
         });
         
         navigate("/dashboard");
@@ -82,7 +82,7 @@ const Login = () => {
                 <Pill className="h-8 w-8 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-semibold">Pharmacy Manager</CardTitle>
+            <CardTitle className="text-2xl font-semibold">RxNexus</CardTitle>
             <CardDescription>Manage your pharmacy efficiently</CardDescription>
           </CardHeader>
           
@@ -119,14 +119,13 @@ const Login = () => {
               </Button>
             </form>
 
-            <Alert className="mt-6 bg-blue-50 border-blue-200">
+            {/* <Alert className="mt-6 bg-blue-50 border-blue-200">
               <AlertDescription className="text-sm">
                 <strong>Demo Accounts:</strong><br/>
-                Admin: admin@rxnexus.com / password<br/>
-                Pharmacist: pharmacist@rxnexus.com / password<br/>
-                Tech: tech@rxnexus.com / password
+                Admin: admin@rxnexus.com / password123<br/>
+                Pharmacist: pharmacist@rxnexus.com / password123<br/>
               </AlertDescription>
-            </Alert>
+            </Alert> */}
           </CardContent>
           
           <CardFooter className="border-t p-4">
