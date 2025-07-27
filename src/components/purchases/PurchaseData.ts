@@ -92,7 +92,7 @@ export const inventoryItems = [
 export const customers = [
   {
     id: 1,
-    name: "Abdul Salaam,",
+    name: "Abdul Salaam",
     email: "salaam@gmail.com",
     phone: "1234567890",
     address: "Srinagar",
