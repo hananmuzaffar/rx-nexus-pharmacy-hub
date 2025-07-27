@@ -10,11 +10,11 @@ export const useSettingsStore = create(
         pharmacyName: "RxNexus Pharmacy",
         licenseNumber: "PL-2025-00123",
         email: "contact@rxnexus.com",
-        phone: "(555) 123-4567",
-        address: "123 Main Street",
-        city: "Anytown",
-        state: "CA",
-        zipCode: "12345"
+        phone: "1234567890",
+        address: "Illahi Bagh",
+        city: "Srinagar",
+        state: "Jammu & Kashmir",
+        zipCode: "190020"
       },
       
       // Notification settings

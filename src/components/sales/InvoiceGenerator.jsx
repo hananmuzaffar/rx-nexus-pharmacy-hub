@@ -64,11 +64,11 @@ const InvoiceGenerator = ({ sale }) => {
             <p className="text-gray-500 text-sm">#{sale.id}</p>
           </div>
           <div className="text-right">
-            <p className="text-lg font-bold text-gray-800">Pharmacy Manager</p>
-            <p className="text-sm text-gray-600">123 Pharmacy Street</p>
-            <p className="text-sm text-gray-600">Mumbai, Maharashtra</p>
-            <p className="text-sm text-gray-600">GSTIN: 27AABCU9603R1ZX</p>
-            <p className="text-sm text-gray-600">Phone: +91 98765 43210</p>
+            <p className="text-lg font-bold text-gray-800">RxNexus</p>
+            <p className="text-sm text-gray-600">Illahi Bagh</p>
+            <p className="text-sm text-gray-600">Srinagar, J&K</p>
+            <p className="text-sm text-gray-600">GSTIN: XXXXXXXXXXXXXXXX</p>
+            <p className="text-sm text-gray-600">Phone: +91 XXXXXXXXXXX</p>
           </div>
         </div>
         

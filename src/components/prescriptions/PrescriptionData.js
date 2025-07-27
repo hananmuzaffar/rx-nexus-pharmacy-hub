@@ -8,9 +8,9 @@ import { useCustomerStore } from '@/stores/customerStore';
 const initialPrescriptions = [
   {
     id: "1",
-    patientName: "John Smith",
+    patientName: "Abdul Salaam",
     patientId: 1,
-    doctorName: "Dr. Jane Wilson",
+    doctorName: "Dr. Amaan",
     date: "2023-12-15",
     status: "active",
     medications: [
@@ -21,9 +21,9 @@ const initialPrescriptions = [
   },
   {
     id: "2",
-    patientName: "Mary Johnson",
+    patientName: "Hussain",
     patientId: 2,
-    doctorName: "Dr. Robert Chen",
+    doctorName: "Dr. Haseeb",
     date: "2023-12-10",
     status: "completed",
     medications: [
@@ -33,9 +33,9 @@ const initialPrescriptions = [
   },
   {
     id: "3",
-    patientName: "David Wilson",
+    patientName: "Nayeem",
     patientId: 3,
-    doctorName: "Dr. Sarah Ahmed",
+    doctorName: "Dr. Naseer Mir",
     date: "2023-12-12",
     status: "active",
     medications: [
@@ -47,9 +47,9 @@ const initialPrescriptions = [
   },
   {
     id: "4",
-    patientName: "Linda Thompson",
+    patientName: "Abdul Salaam",
     patientId: 4,
-    doctorName: "Dr. Michael Lee",
+    doctorName: "Dr. Haseeb",
     date: "2023-12-05",
     status: "expired",
     medications: [
@@ -59,9 +59,9 @@ const initialPrescriptions = [
   },
   {
     id: "5",
-    patientName: "Robert Garcia",
+    patientName: "Basit",
     patientId: 5,
-    doctorName: "Dr. Elizabeth Taylor",
+    doctorName: "Dr. M. Ashraf Khan",
     date: "2023-12-14",
     status: "pending",
     medications: [
@@ -76,10 +76,10 @@ const initialPrescriptions = [
 const initialEPrescriptions = [
   {
     id: "e1",
-    patientName: "Susan Miller",
+    patientName: "Nayeem",
     patientId: 1,
-    doctorName: "Dr. Thomas Brown",
-    hospitalName: "City Memorial Hospital",
+    doctorName: "Dr. Amaam",
+    hospitalName: "City Hospital",
     date: "2023-12-16",
     status: "pending",
     medications: [
@@ -90,9 +90,9 @@ const initialEPrescriptions = [
   },
   {
     id: "e2",
-    patientName: "James Wilson",
+    patientName: "Hussain",
     patientId: 2,
-    doctorName: "Dr. Lisa Rodriguez",
+    doctorName: "Dr. Naseer Mir",
     hospitalName: "University Medical Center",
     date: "2023-12-15",
     status: "verified",
@@ -104,9 +104,9 @@ const initialEPrescriptions = [
   },
   {
     id: "e3",
-    patientName: "Patricia Adams",
+    patientName: "Abdul Salaam",
     patientId: 5,
-    doctorName: "Dr. John Williams",
+    doctorName: "Dr. M. Ashraf Khan",
     hospitalName: "Community Health Partners",
     date: "2023-12-14",
     status: "processing",

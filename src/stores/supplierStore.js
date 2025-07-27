@@ -5,27 +5,27 @@ import { create } from 'zustand';
 const initialSuppliers = [
   {
     id: "1",
-    name: "MedSupply Corp",
-    contact: "John Smith",
-    email: "contact@medsupplycorp.com",
-    phone: "(555) 123-4567",
-    address: "123 Medical Way, Pharma City, CA 90001"
+    name: "Sunshine Pharma Distributors",
+    contact: "M. Shakeel",
+    email: "contact@sunshine.com",
+    phone: "1234567890",
+    address: "Srinagar, J&K"
   },
   {
     id: "2",
     name: "Healthcare Distributors",
-    contact: "Sarah Johnson",
-    email: "info@healthcaredist.com",
-    phone: "(555) 234-5678",
-    address: "456 Pharmacy Drive, Medicine Town, NY 10001"
+    contact: "Aasif",
+    email: "contact@healthcare.com",
+    phone: "9876543210",
+    address: "Sopore, J&K"
   },
   {
     id: "3",
-    name: "PharmWholesale Inc",
-    contact: "Michael Davis",
-    email: "service@pharmwholesale.com",
-    phone: "(555) 345-6789",
-    address: "789 Prescription Lane, Remedy City, TX 75001"
+    name: "MD Pharma",
+    contact: "Mudasir",
+    email: "contact@mdpharma.com",
+    phone: "8956741230",
+    address: "Srinagar, J&K"
   }
 ];
 
