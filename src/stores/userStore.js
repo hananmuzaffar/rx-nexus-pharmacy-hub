@@ -38,11 +38,11 @@ const rolePermissions = {
   Pharmacist: {
     inventory: { view: true, add: true, edit: true, delete: false },
     sales: { view: true, add: true, edit: true, delete: false },
-    purchases: { view: true, add: false, edit: false, delete: false },
+    purchases: { view: false, add: false, edit: false, delete: false },
     customers: { view: true, add: true, edit: true, delete: false },
     prescriptions: { view: true, add: true, edit: true, delete: false },
     returns: { view: true, add: true, edit: true, delete: false },
-    reports: { view: true, add: false, edit: false, delete: false },
+    reports: { view: false, add: false, edit: false, delete: false },
     settings: { view: false, add: false, edit: false, delete: false },
     users: { view: false, add: false, edit: false, delete: false },
   },
