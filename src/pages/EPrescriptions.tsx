@@ -10,8 +10,8 @@ import { toast } from "@/hooks/use-toast";
 const initialEPrescriptions = [
   {
     id: "ERX00456",
-    patient: "Maria Rodriguez",
-    provider: "Dr. Anthony Miller",
+    patient: "Hussain",
+    provider: "Dr. Haseeb",
     medication: "Metformin 500mg",
     received: "Today, 9:45 AM",
     priority: "high",
@@ -19,8 +19,8 @@ const initialEPrescriptions = [
   },
   {
     id: "ERX00455",
-    patient: "James Wilson",
-    provider: "Dr. Sarah Johnson",
+    patient: "Nayeem",
+    provider: "Dr. Naseer Mir",
     medication: "Lisinopril 10mg",
     received: "Today, 9:30 AM",
     priority: "medium",
@@ -28,8 +28,8 @@ const initialEPrescriptions = [
   },
   {
     id: "ERX00454",
-    patient: "Robert Taylor",
-    provider: "Dr. Lisa Wong",
+    patient: "Basit",
+    provider: "Dr. Haseeb",
     medication: "Atorvastatin 20mg",
     received: "Today, 9:15 AM",
     priority: "low",
@@ -59,8 +59,8 @@ const EPrescriptions = () => {
     setTimeout(() => {
       const newPrescription = {
         id: `ERX00${Math.floor(Math.random() * 1000)}`,
-        patient: "Alex Johnson",
-        provider: "Dr. Michael Smith",
+        patient: "Abdul Salaam",
+        provider: "Dr. Amaan",
         medication: "Amoxicillin 500mg",
         received: "Just now",
         priority: "medium",

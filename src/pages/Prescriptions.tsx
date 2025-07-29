@@ -15,8 +15,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 const initialPrescriptions = [
   { 
     id: "RX00123", 
-    patient: "John Smith", 
-    doctor: "Dr. Robert Wilson", 
+    patient: "Hussain", 
+    doctor: "Dr. Haseeb", 
     medication: "Amoxicillin 500mg",
     dosage: "1 tablet three times daily",
     quantity: 30,
@@ -28,8 +28,8 @@ const initialPrescriptions = [
   },
   { 
     id: "RX00124", 
-    patient: "Sarah Johnson", 
-    doctor: "Dr. Emily Chen", 
+    patient: "Basit", 
+    doctor: "Dr. M. Ashraf Khan", 
     medication: "Lisinopril 10mg",
     dosage: "1 tablet daily",
     quantity: 30,
@@ -43,18 +43,18 @@ const initialPrescriptions = [
 
 // Sample patients
 const patients = [
-  { id: 1, name: "John Smith", dob: "1980-06-15" },
-  { id: 2, name: "Sarah Johnson", dob: "1975-03-22" },
-  { id: 3, name: "Michael Brown", dob: "1992-11-08" },
-  { id: 4, name: "Emma Wilson", dob: "1988-09-30" },
+  { id: 1, name: "Abdul Salaam", dob: "1980-06-15" },
+  { id: 2, name: "Basit", dob: "1975-03-22" },
+  { id: 3, name: "Nayeem", dob: "1992-11-08" },
+  { id: 4, name: "Hussain", dob: "1988-09-30" },
 ];
 
 // Sample doctors
 const doctors = [
-  { id: 1, name: "Dr. Robert Wilson" },
-  { id: 2, name: "Dr. Emily Chen" },
-  { id: 3, name: "Dr. James Martinez" },
-  { id: 4, name: "Dr. Susan Taylor" },
+  { id: 1, name: "Dr. Amaan" },
+  { id: 2, name: "Dr. Naseer Mir" },
+  { id: 3, name: "Dr. Haseeb" },
+  { id: 4, name: "Dr. M. Ashraf Khan" },
 ];
 
 // Sample medications

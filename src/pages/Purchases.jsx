@@ -20,7 +20,7 @@ import SupplierFormDialog from '@/components/purchases/SupplierFormDialog';
 const sampleOrders = [
   {
     id: 'PO-001',
-    supplier: 'MedSupply Corp',
+    supplier: 'Sunshine Pharma Distributors',
     date: '2025-04-05',
     items: 12,
     total: 1250.00,
@@ -28,7 +28,7 @@ const sampleOrders = [
   },
   {
     id: 'PO-002',
-    supplier: 'Healthcare Distributors',
+    supplier: 'MD Pharma',
     date: '2025-04-03',
     items: 8,
     total: 950.00,
@@ -36,7 +36,7 @@ const sampleOrders = [
   },
   {
     id: 'PO-003',
-    supplier: 'PharmWholesale Inc',
+    supplier: 'Healthcare Distributors',
     date: '2025-04-01',
     items: 15,
     total: 1680.00,

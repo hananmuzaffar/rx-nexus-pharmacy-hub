@@ -84,7 +84,7 @@ const Settings = () => {
     lastName: currentUser?.name?.split(' ')[1] || "User",
     email: currentUser?.email || "admin@rxnexus.com",
     role: currentUser?.role || "Administrator",
-    phone: "(555) 987-6543",
+    phone: "1234567890",
   });
 
   useEffect(() => {
