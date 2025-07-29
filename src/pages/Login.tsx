@@ -119,14 +119,6 @@ const Login = () => {
               >
                 Pharmacist (pharmacist@rxnexus.com)
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full text-xs"
-                onClick={() => handleDemoLogin('tech@rxnexus.com')}
-              >
-                Technician (tech@rxnexus.com)
-              </Button>
             </div>
             <p className="text-xs text-muted-foreground text-center mt-2">
               Password: password123
