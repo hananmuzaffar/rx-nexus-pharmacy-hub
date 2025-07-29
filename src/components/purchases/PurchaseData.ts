@@ -1,9 +1,9 @@
 
 // Sample suppliers
 export const suppliers = [
-  { id: 1, name: "PharmaSupply Inc.", contact: "(555) 234-5678", email: "orders@pharmasupply.com" },
-  { id: 2, name: "MediWholesale Co.", contact: "(555) 876-5432", email: "sales@mediwholesale.com" },
-  { id: 3, name: "HealthDist Partners", contact: "(555) 345-6789", email: "info@healthdist.com" },
+  { id: 1, name: "Sunshine Pharma Distributors", contact: "1234567890", email: "contact@sunshine.com" },
+  { id: 2, name: "Healthcare Distributors", contact: "9876543210", email: "contact@healthcare.com" },
+  { id: 3, name: "MD Pharma", contact: "8956741230", email: "contact@mdpharma.com" },
 ];
 
 // Sample products for purchasing
@@ -18,7 +18,7 @@ export const purchaseProducts = [
 export const initialPurchaseOrders = [
   { 
     id: "PO-2025-001", 
-    supplier: "PharmaSupply Inc.", 
+    supplier: "Sunshine Pharma Distributors", 
     date: "Apr 05, 2025",
     items: 42,
     total: 3560.75,
@@ -26,7 +26,7 @@ export const initialPurchaseOrders = [
   },
   { 
     id: "PO-2025-002", 
-    supplier: "MediWholesale Co.", 
+    supplier: "MD Pharma", 
     date: "Apr 03, 2025",
     items: 28,
     total: 2145.30,

@@ -62,7 +62,7 @@ const SupplierFormDialog = ({
                 <FormItem>
                   <FormLabel>Company Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="MedSupply Corp" {...field} />
+                    <Input placeholder="XXXXXXXXXXXX" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,7 +76,7 @@ const SupplierFormDialog = ({
                 <FormItem>
                   <FormLabel>Contact Person</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Smith" {...field} />
+                    <Input placeholder="XXXXXXXXXX" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -118,7 +118,7 @@ const SupplierFormDialog = ({
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="123 Business St, City, State, 12345" {...field} />
+                    <Input placeholder="Srinagar, J&K, 190020" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
