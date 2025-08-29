@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -51,9 +52,58 @@ const Login = () => {
     }
   };
 
-  const handleDemoLogin = (userEmail: string) => {
-    setEmail(userEmail);
-    setPassword('password123'); // Demo password
+  const handleDemoSignUp = async (userEmail: string, userName: string, userRole: string) => {
+    setIsLoading(true);
+    try {
+      // Check if user already exists
+      const { data: existingUser } = await supabase.auth.signInWithPassword({
+        email: userEmail,
+        password: 'password123'
+      });
+      
+      if (existingUser.user) {
+        toast({
+          title: "Login Successful",
+          description: `Welcome back, ${userName}!`,
+        });
+        navigate('/');
+        return;
+      }
+    } catch (error) {
+      // User doesn't exist, create new account
+      try {
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email: userEmail,
+          password: 'password123',
+          options: {
+            data: {
+              name: userName,
+              role: userRole
+            },
+            emailRedirectTo: `${window.location.origin}/`
+          }
+        });
+        
+        if (signUpError) throw signUpError;
+        
+        if (data.user) {
+          toast({
+            title: "Account Created",
+            description: `Welcome ${userName}! You can now log in.`,
+          });
+          setEmail(userEmail);
+          setPassword('password123');
+        }
+      } catch (createError: any) {
+        toast({
+          title: "Demo Account Setup Failed",
+          description: createError.message,
+          variant: "destructive"
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -107,7 +157,8 @@ const Login = () => {
                 variant="outline"
                 size="sm"
                 className="w-full text-xs"
-                onClick={() => handleDemoLogin('admin@rxnexus.com')}
+                onClick={() => handleDemoSignUp('admin@rxnexus.com', 'Admin User', 'Administrator')}
+                disabled={isLoading}
               >
                 Admin (admin@rxnexus.com)
               </Button>
@@ -115,7 +166,8 @@ const Login = () => {
                 variant="outline"
                 size="sm"
                 className="w-full text-xs"
-                onClick={() => handleDemoLogin('pharmacist@rxnexus.com')}
+                onClick={() => handleDemoSignUp('pharmacist@rxnexus.com', 'Pharmacist User', 'Pharmacist')}
+                disabled={isLoading}
               >
                 Pharmacist (pharmacist@rxnexus.com)
               </Button>

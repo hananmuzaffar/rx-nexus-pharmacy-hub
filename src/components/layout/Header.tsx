@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Search, Settings, User, LogOut } from 'lucide-react';
@@ -9,6 +9,7 @@ import { useInventoryStore } from '@/stores/inventoryStore';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useAuth } from '@/hooks/useAuth';
 import NotificationPanel from './NotificationPanel';
+import { supabase } from '@/integrations/supabase/client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,8 +22,41 @@ const Header = () => {
   const navigate = useNavigate();
   const { logout, currentUser } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
+  const [userProfile, setUserProfile] = useState<any>(null);
   const { getItemsByCategoryOrSearch } = useInventoryStore();
   const { customers } = useCustomerStore();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (currentUser) {
+        try {
+          const { data } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', currentUser.id)
+            .single();
+          
+          if (data) {
+            setUserProfile(data);
+          } else {
+            // Fallback to user metadata
+            setUserProfile({
+              name: currentUser.user_metadata?.name || 'User',
+              role: currentUser.user_metadata?.role || 'User'
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+          setUserProfile({
+            name: currentUser.user_metadata?.name || 'User',
+            role: currentUser.user_metadata?.role || 'User'
+          });
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [currentUser]);
 
   const handleLogout = async () => {
     // Log out using Supabase
@@ -105,8 +139,8 @@ const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <div className="px-3 py-2 text-sm font-medium border-b mb-1">
-              {currentUser?.name || "User"}
-              <div className="text-xs font-normal text-muted-foreground">{currentUser?.role || "User"}</div>
+              {userProfile?.name || "User"}
+              <div className="text-xs font-normal text-muted-foreground">{userProfile?.role || "User"}</div>
             </div>
             <DropdownMenuItem onClick={() => navigate('/settings?tab=profile')}>Profile</DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate('/settings')}>Settings</DropdownMenuItem>

@@ -19,6 +19,7 @@ import { useAuth } from '@/hooks/useAuth';
 import UserFormDialog from "@/components/settings/UserFormDialog";
 import UserRolePermissionsDialog from "@/components/settings/UserRolePermissionsDialog";
 import UserPermissionsDialog from "@/components/settings/UserPermissionsDialog";
+import { supabase } from '@/integrations/supabase/client';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -78,14 +79,57 @@ const Settings = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
   
   const [profileData, setProfileData] = useState<ProfileData>({
-    firstName: currentUser?.name?.split(' ')[0] || "Admin",
-    lastName: currentUser?.name?.split(' ')[1] || "User",
-    email: currentUser?.email || "admin@rxnexus.com",
-    role: currentUser?.role || "Administrator",
-    phone: "1234567890",
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
+    phone: "",
   });
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (currentUser) {
+        try {
+          const { data } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', currentUser.id)
+            .single();
+          
+          if (data) {
+            setUserProfile(data);
+            setProfileData({
+              firstName: data.name?.split(' ')[0] || "User",
+              lastName: data.name?.split(' ')[1] || "",
+              email: data.email || currentUser.email || "",
+              role: data.role || "",
+              phone: data.phone || "",
+            });
+          } else {
+            // Fallback to user metadata
+            setUserProfile({
+              name: currentUser.user_metadata?.name || 'User',
+              role: currentUser.user_metadata?.role || 'User'
+            });
+            setProfileData({
+              firstName: currentUser.user_metadata?.name?.split(' ')[0] || "User",
+              lastName: currentUser.user_metadata?.name?.split(' ')[1] || "",
+              email: currentUser.email || "",
+              role: currentUser.user_metadata?.role || "",
+              phone: "",
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [currentUser]);
 
   useEffect(() => {
     if (tabParam) {
@@ -190,8 +234,7 @@ const Settings = () => {
   };
 
   // Check if current user is an admin
-  const isAdmin = currentUser?.role === "Administrator" || 
-    (currentUser && getUserPermissions(currentUser.id)?.users?.edit);
+  const isAdmin = currentUser && userProfile?.role === "Administrator";
 
   return (
     <div className="space-y-4">

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Sidebar as SidebarComponent,
@@ -28,27 +28,62 @@ import {
   Pill
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { currentUser } = useAuth();
+  const [userPermissions, setUserPermissions] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (currentUser) {
+      const checkPermissions = async () => {
+        const modules = ['inventory', 'sales', 'purchases', 'customers', 'prescriptions', 'returns', 'reports', 'settings'];
+        const permissions: Record<string, boolean> = {};
+        
+        for (const module of modules) {
+          try {
+            const { data } = await supabase.rpc('has_permission', {
+              user_id: currentUser.id,
+              module_name: module,
+              action_name: 'view'
+            });
+            permissions[module] = data || false;
+          } catch (error) {
+            permissions[module] = false;
+          }
+        }
+        
+        setUserPermissions(permissions);
+      };
+      
+      checkPermissions();
+    }
+  }, [currentUser]);
 
   const mainMenuItems = [
-    { icon: Activity, label: 'Dashboard', path: '/' },
-    { icon: Package, label: 'Inventory', path: '/inventory' },
-    { icon: ShoppingCart, label: 'Sales', path: '/sales' },
-    { icon: Pill, label: 'Purchases', path: '/purchases' },
-    { icon: Users, label: 'Customers', path: '/customers' },
-    { icon: FileText, label: 'Prescriptions', path: '/prescriptions' },
+    { icon: Activity, label: 'Dashboard', path: '/', module: 'dashboard' },
+    { icon: Package, label: 'Inventory', path: '/inventory', module: 'inventory' },
+    { icon: ShoppingCart, label: 'Sales', path: '/sales', module: 'sales' },
+    { icon: Pill, label: 'Purchases', path: '/purchases', module: 'purchases' },
+    { icon: Users, label: 'Customers', path: '/customers', module: 'customers' },
+    { icon: FileText, label: 'Prescriptions', path: '/prescriptions', module: 'prescriptions' },
   ];
 
   const managementMenuItems = [
-    { icon: RotateCcw, label: 'Returns', path: '/returns' },
-    { icon: Bell, label: 'Alerts', path: '/alerts' },
-    { icon: BarChart3, label: 'Reports', path: '/reports' },
-    { icon: ShieldCheck, label: 'Compliance', path: '/compliance' },
-    { icon: Mail, label: 'E-Prescriptions', path: '/e-prescriptions' },
-    { icon: Settings, label: 'Settings', path: '/settings' },
+    { icon: RotateCcw, label: 'Returns', path: '/returns', module: 'returns' },
+    { icon: Bell, label: 'Alerts', path: '/alerts', module: 'alerts' },
+    { icon: BarChart3, label: 'Reports', path: '/reports', module: 'reports' },
+    { icon: ShieldCheck, label: 'Compliance', path: '/compliance', module: 'compliance' },
+    { icon: Mail, label: 'E-Prescriptions', path: '/e-prescriptions', module: 'prescriptions' },
+    { icon: Settings, label: 'Settings', path: '/settings', module: 'settings' },
   ];
+
+  const isMenuItemVisible = (module: string) => {
+    if (module === 'dashboard') return true; // Dashboard is always visible
+    return userPermissions[module] === true;
+  };
 
   return (
     <SidebarComponent>
@@ -65,7 +100,9 @@ const Sidebar = () => {
           <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainMenuItems.map((item) => (
+              {mainMenuItems
+                .filter(item => isMenuItemVisible(item.module))
+                .map((item) => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton asChild>
                     <Link 
@@ -89,7 +126,9 @@ const Sidebar = () => {
           <SidebarGroupLabel>Management</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {managementMenuItems.map((item) => (
+              {managementMenuItems
+                .filter(item => isMenuItemVisible(item.module))
+                .map((item) => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton asChild>
                     <Link 
