@@ -131,7 +131,7 @@ const NewOrderDialog: React.FC<NewOrderDialogProps> = ({
   // Handle submitting the order
   const handleCreateOrder = () => {
     if (selectedSupplier && orderItems.length > 0) {
-      const supplier = suppliers.find(s => s.id === selectedSupplier);
+      const supplier = suppliers.find(s => s.id.toString() === selectedSupplier);
       
       if (!supplier) return;
       
@@ -173,11 +173,11 @@ const NewOrderDialog: React.FC<NewOrderDialogProps> = ({
                 <SelectValue placeholder="Choose a supplier" />
               </SelectTrigger>
               <SelectContent>
-                {suppliers.map(supplier => (
-                  <SelectItem key={supplier.id} value={supplier.id}>
-                    {supplier.name}
-                  </SelectItem>
-                ))}
+                          {suppliers.map(supplier => (
+                            <SelectItem key={supplier.id} value={supplier.id.toString()}>
+                              {supplier.name}
+                            </SelectItem>
+                          ))}
               </SelectContent>
             </Select>
           </div>

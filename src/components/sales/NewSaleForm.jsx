@@ -257,10 +257,25 @@ const NewSaleForm = ({ onCreateSale, onCancel }) => {
                           <SelectValue placeholder="Select a product" />
                         </SelectTrigger>
                         <SelectContent>
-                          {inventoryItems.map(product => (
+                          {inventoryItems
+                            .filter(product => {
+                              // Filter out out-of-stock items
+                              if (product.stock <= 0) return false;
+                              
+                              // Filter out expired items
+                              if (product.expiry_date || product.expiryDate) {
+                                const expiryDate = new Date(product.expiry_date || product.expiryDate);
+                                const today = new Date();
+                                if (expiryDate <= today) return false;
+                              }
+                              
+                              return true;
+                            })
+                            .map(product => (
                             <SelectItem key={product.id} value={product.name}>
-                              {product.name} - ₹{product.unitPrice.toFixed(2)} 
-                              {product.medicineType === 'strip' && ` (${product.tabletsPerStrip} tablets)`}
+                              {product.name} - ₹{(product.unit_price || product.unitPrice || 0).toFixed(2)} 
+                              {(product.medicine_type || product.medicineType) === 'strip' && ` (${product.tablets_per_strip || product.tabletsPerStrip || 0} tablets)`}
+                              {product.stock <= 10 && ` - Low Stock: ${product.stock}`}
                             </SelectItem>
                           ))}
                         </SelectContent>

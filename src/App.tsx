@@ -6,6 +6,7 @@ import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
+import { useInitializeStores } from '@/hooks/useInitializeStores';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import MainLayout from '@/components/layout/MainLayout';
 import Dashboard from '@/pages/Dashboard';
@@ -35,6 +36,9 @@ const queryClient = new QueryClient({
 
 function AppRoutes() {
   const { isAuthenticated } = useAuth();
+  
+  // Initialize stores when authenticated
+  useInitializeStores();
 
   return (
     <Routes>
